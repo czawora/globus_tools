@@ -1,0 +1,8 @@
+﻿session_path,nsp_suffix,analog_ext,physio_ext,spike_channel_range_start,spike_channel_range_end
+/Volumes/56B/UTAH_B/NIH050/data_raw/170627_1027_beh,micro_beh,ns3,ns5,1,96
+/Volumes/56B/UTAH_B/NIH050/data_raw/170704_1042_beh,micro_beh,ns3,ns5,1,96
+/Volumes/56B/UTAH_B/NIH050/data_raw/170712_1318_beh,micro_beh,ns3,ns5,1,96
+/Volumes/56B/UTAH_B/NIH050/data_raw/170712_1627_beh,micro_beh,ns3,ns5,1,96
+/Volumes/56E/UTAH_E/NIH064/data_raw/180926_1517_beh,utah_beh,ns3,ns5,1,128
+/Volumes/56E/UTAH_E/NIH064/data_raw/180927_1112_beh,utah_beh,ns3,ns5,1,128
+/Volumes/56E/UTAH_E/NIH064/data_raw/180928_1121_beh,utah_beh,ns3,ns5,1,128

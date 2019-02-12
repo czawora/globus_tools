@@ -1,0 +1,9 @@
+#2019_01_15_11_44_15
+#subj_path: /Volumes/56A/UTAH_A/NIH029
+#regex_include: .*
+#regex_exclude: #
+#raw_dir: data_raw
+#ns6: True | ns5: False | analog pulse: ns3 | digital pulse: nev
+#transfer sess count: 198
+
+

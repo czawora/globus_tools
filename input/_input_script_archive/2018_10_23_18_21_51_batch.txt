@@ -1,0 +1,8 @@
+#2018_10_23_18_21_51
+#transfer count: 24
+
+
+/Volumes/56B/UTAH_B/NIH047/data_raw/170314_1258/170314_1258_utah.ns5 /data/zaworaca/data/labmates/JW/NIH047/NIH047_170314_1258_utah/NIH047_170314_1258_utah.ns5
+/Volumes/56B/UTAH_B/NIH047/data_raw/170314_1258/170314_1258_utah.ns4 /data/zaworaca/data/labmates/JW/NIH047/NIH047_170314_1258_utah/NIH047_170314_1258_utah.ns4
+/Volumes/56B/UTAH_B/NIH047/data_raw/170314_1258/170314_1258_utah.nev /data/zaworaca/data/labmates/JW/NIH047/NIH047_170314_1258_utah/NIH047_170314_1258_utah.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH047_170314_1258_utah_info.txt /data/zaworaca/data/labmates/JW/NIH047/NIH047_170314_1258_utah/NIH047_170314_1258_utah_info.txt

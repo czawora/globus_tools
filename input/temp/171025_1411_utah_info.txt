@@ -1,0 +1,6 @@
+/Volumes/56C/UTAH_C/NIH054/data_raw_utah/171025_1411
+utah
+ns3
+ns5
+1
+96

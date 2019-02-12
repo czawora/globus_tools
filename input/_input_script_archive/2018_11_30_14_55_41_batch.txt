@@ -1,0 +1,12 @@
+#2018_11_30_14_55_41
+#subj_path: /Volumes/56A/UTAH_A/NIH029
+#regex_include: .*_utah.*
+#regex_exclude: .*NSxInfo.*
+#raw_dir: data_raw
+#ns6: True | ns5: False | analog pulse: None | digital pulse: nev
+#transfer sess count: 105
+
+
+/Users/zaworaca/dev/biowulf_weeds/_sync_folders/globus/input/elementInfo_micro/NIH029.csv /data/FRNU/CZ/NIH029/NIH029.csv
+/Volumes/56A/UTAH_A/NIH029/data_raw/150603_1723/150603_1723_utah.ns6 /data/FRNU/CZ/NIH029/150603_1723_utah/150603_1723_utah.ns6
+/Volumes/56A/UTAH_A/NIH029/data_raw/150603_1723/150603_1723_utah.nev /data/FRNU/CZ/NIH029/150603_1723_utah/150603_1723_utah.nev

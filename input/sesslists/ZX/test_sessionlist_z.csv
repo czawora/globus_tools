@@ -1,0 +1,8 @@
+session_path,file_inclusion_string,file_exclusion_string,analog_ext,physio_ext,channel
+/Volumes/56E/UTAH_E/NIH064/data_raw/180930_1546_beh,utah_beh,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH064/data_raw/181003_1508_beh,utah_beh,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH064/data_raw/181006_1141,INST0,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH064/data_raw/181008_1132_wrongSubject,YmCiLtiHHid,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH066/data_raw/181029_1626,INST0,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH066/data_raw/181031_1644,INST0,None,ns3,ns5,utah
+/Volumes/56E/UTAH_E/NIH066/data_raw/181103_1507,INST0,None,ns3,ns5,utah

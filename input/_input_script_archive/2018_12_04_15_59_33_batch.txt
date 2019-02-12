@@ -1,0 +1,39 @@
+#2018_12_04_15_59_33
+#transfer sess count: 7
+
+
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_180930_1546_utah_beh_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH064_180930_1546_utah_beh/NIH064_NIH064_180930_1546_utah_beh_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH064/data_raw/180930_1546_beh/180930_1546_utah_beh.ns5 /data/zaworaca/data/labmates/ZX/NIH064_180930_1546_utah_beh/NIH064_NIH064_180930_1546_utah_beh.ns5
+/Volumes/56E/UTAH_E/NIH064/data_raw/180930_1546_beh/180930_1546_utah_beh.ns3 /data/zaworaca/data/labmates/ZX/NIH064_180930_1546_utah_beh/NIH064_NIH064_180930_1546_utah_beh.ns3
+/Volumes/56E/UTAH_E/NIH064/data_raw/180930_1546_beh/180930_1546_utah_beh.nev /data/zaworaca/data/labmates/ZX/NIH064_180930_1546_utah_beh/NIH064_NIH064_180930_1546_utah_beh.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_180930_1546_utah_beh_info.txt /data/zaworaca/data/labmates/ZX/NIH064_180930_1546_utah_beh/NIH064_NIH064_180930_1546_utah_beh_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181003_1508_utah_beh_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH064_181003_1508_utah_beh/NIH064_NIH064_181003_1508_utah_beh_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH064/data_raw/181003_1508_beh/181003_1508_utah_beh.ns5 /data/zaworaca/data/labmates/ZX/NIH064_181003_1508_utah_beh/NIH064_NIH064_181003_1508_utah_beh.ns5
+/Volumes/56E/UTAH_E/NIH064/data_raw/181003_1508_beh/181003_1508_utah_beh.ns3 /data/zaworaca/data/labmates/ZX/NIH064_181003_1508_utah_beh/NIH064_NIH064_181003_1508_utah_beh.ns3
+/Volumes/56E/UTAH_E/NIH064/data_raw/181003_1508_beh/181003_1508_utah_beh.nev /data/zaworaca/data/labmates/ZX/NIH064_181003_1508_utah_beh/NIH064_NIH064_181003_1508_utah_beh.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181003_1508_utah_beh_info.txt /data/zaworaca/data/labmates/ZX/NIH064_181003_1508_utah_beh/NIH064_NIH064_181003_1508_utah_beh_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181006_1141_INST0_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH064_181006_1141_INST0/NIH064_NIH064_181006_1141_INST0_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH064/data_raw/181006_1141/ycEDidUig-20181006-114134-INST0.ns5 /data/zaworaca/data/labmates/ZX/NIH064_181006_1141_INST0/NIH064_NIH064_181006_1141_INST0.ns5
+/Volumes/56E/UTAH_E/NIH064/data_raw/181006_1141/ycEDidUig-20181006-114134-INST0.ns3 /data/zaworaca/data/labmates/ZX/NIH064_181006_1141_INST0/NIH064_NIH064_181006_1141_INST0.ns3
+/Volumes/56E/UTAH_E/NIH064/data_raw/181006_1141/ycEDidUig-20181006-114134-INST0.nev /data/zaworaca/data/labmates/ZX/NIH064_181006_1141_INST0/NIH064_NIH064_181006_1141_INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181006_1141_INST0_info.txt /data/zaworaca/data/labmates/ZX/NIH064_181006_1141_INST0/NIH064_NIH064_181006_1141_INST0_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181008_1132_YmCiLtiHHid_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH064_181008_1132_YmCiLtiHHid/NIH064_NIH064_181008_1132_YmCiLtiHHid_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH064/data_raw/181008_1132_wrongSubject/YmCiLtiHHid-20181008-113214-113214.ns5 /data/zaworaca/data/labmates/ZX/NIH064_181008_1132_YmCiLtiHHid/NIH064_NIH064_181008_1132_YmCiLtiHHid.ns5
+/Volumes/56E/UTAH_E/NIH064/data_raw/181008_1132_wrongSubject/YmCiLtiHHid-20181008-113214-113214.ns3 /data/zaworaca/data/labmates/ZX/NIH064_181008_1132_YmCiLtiHHid/NIH064_NIH064_181008_1132_YmCiLtiHHid.ns3
+/Volumes/56E/UTAH_E/NIH064/data_raw/181008_1132_wrongSubject/YmCiLtiHHid-20181008-113214-113214.nev /data/zaworaca/data/labmates/ZX/NIH064_181008_1132_YmCiLtiHHid/NIH064_NIH064_181008_1132_YmCiLtiHHid.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH064_NIH064_181008_1132_YmCiLtiHHid_info.txt /data/zaworaca/data/labmates/ZX/NIH064_181008_1132_YmCiLtiHHid/NIH064_NIH064_181008_1132_YmCiLtiHHid_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181029_1626_INST0_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH066_181029_1626_INST0/NIH066_NIH066_181029_1626_INST0_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH066/data_raw/181029_1626/QaHkESkEkA-20181029-162637-INST0.ns5 /data/zaworaca/data/labmates/ZX/NIH066_181029_1626_INST0/NIH066_NIH066_181029_1626_INST0.ns5
+/Volumes/56E/UTAH_E/NIH066/data_raw/181029_1626/QaHkESkEkA-20181029-162637-INST0.ns3 /data/zaworaca/data/labmates/ZX/NIH066_181029_1626_INST0/NIH066_NIH066_181029_1626_INST0.ns3
+/Volumes/56E/UTAH_E/NIH066/data_raw/181029_1626/QaHkESkEkA-20181029-162637-INST0.nev /data/zaworaca/data/labmates/ZX/NIH066_181029_1626_INST0/NIH066_NIH066_181029_1626_INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181029_1626_INST0_info.txt /data/zaworaca/data/labmates/ZX/NIH066_181029_1626_INST0/NIH066_NIH066_181029_1626_INST0_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181031_1644_INST0_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH066_181031_1644_INST0/NIH066_NIH066_181031_1644_INST0_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH066/data_raw/181031_1644/QaHkESkEkA-20181031-164438-INST0.ns5 /data/zaworaca/data/labmates/ZX/NIH066_181031_1644_INST0/NIH066_NIH066_181031_1644_INST0.ns5
+/Volumes/56E/UTAH_E/NIH066/data_raw/181031_1644/QaHkESkEkA-20181031-164438-INST0.ns3 /data/zaworaca/data/labmates/ZX/NIH066_181031_1644_INST0/NIH066_NIH066_181031_1644_INST0.ns3
+/Volumes/56E/UTAH_E/NIH066/data_raw/181031_1644/QaHkESkEkA-20181031-164438-INST0.nev /data/zaworaca/data/labmates/ZX/NIH066_181031_1644_INST0/NIH066_NIH066_181031_1644_INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181031_1644_INST0_info.txt /data/zaworaca/data/labmates/ZX/NIH066_181031_1644_INST0/NIH066_NIH066_181031_1644_INST0_info.txt
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181103_1507_INST0_elementInfo.txt /data/zaworaca/data/labmates/ZX/NIH066_181103_1507_INST0/NIH066_NIH066_181103_1507_INST0_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH066/data_raw/181103_1507/QaHkESkEkA-20181103-150709-INST0.ns5 /data/zaworaca/data/labmates/ZX/NIH066_181103_1507_INST0/NIH066_NIH066_181103_1507_INST0.ns5
+/Volumes/56E/UTAH_E/NIH066/data_raw/181103_1507/QaHkESkEkA-20181103-150709-INST0.ns3 /data/zaworaca/data/labmates/ZX/NIH066_181103_1507_INST0/NIH066_NIH066_181103_1507_INST0.ns3
+/Volumes/56E/UTAH_E/NIH066/data_raw/181103_1507/QaHkESkEkA-20181103-150709-INST0.nev /data/zaworaca/data/labmates/ZX/NIH066_181103_1507_INST0/NIH066_NIH066_181103_1507_INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH066_NIH066_181103_1507_INST0_info.txt /data/zaworaca/data/labmates/ZX/NIH066_181103_1507_INST0/NIH066_NIH066_181103_1507_INST0_info.txt

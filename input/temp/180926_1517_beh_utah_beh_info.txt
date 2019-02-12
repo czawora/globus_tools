@@ -1,0 +1,6 @@
+/Volumes/56E/UTAH_E/NIH064/data_raw/180926_1517_beh
+utah_beh
+ns3
+ns5
+1
+128

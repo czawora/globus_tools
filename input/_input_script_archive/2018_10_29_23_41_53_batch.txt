@@ -1,0 +1,8 @@
+#2018_10_29_23_41_53
+#transfer count: 1
+
+
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM_MAP/181024_1539/181024_1539_ieeg1.ns5 /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181024_1539_ieeg1/NIH066_181024_1539_ieeg1.ns5
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM_MAP/181024_1539/181024_1539_ieeg1.ns3 /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181024_1539_ieeg1/NIH066_181024_1539_ieeg1.ns3
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM_MAP/181024_1539/181024_1539_ieeg1.nev /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181024_1539_ieeg1/NIH066_181024_1539_ieeg1.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH066_181024_1539_ieeg1_info.txt /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181024_1539_ieeg1/NIH066_181024_1539_ieeg1_info.txt

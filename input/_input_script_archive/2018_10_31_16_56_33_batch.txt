@@ -1,0 +1,8 @@
+#2018_10_31_16_56_33
+#transfer count: 1
+
+
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181030_1538/QaHkESkEkA-20181030-153845-INST0.ns5 /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181030_1538_INST0/NIH066_QaHkESkEkA-20181030-153845-INST0.ns5
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181030_1538/QaHkESkEkA-20181030-153845-INST0.ns3 /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181030_1538_INST0/NIH066_QaHkESkEkA-20181030-153845-INST0.ns3
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181030_1538/QaHkESkEkA-20181030-153845-INST0.nev /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181030_1538_INST0/NIH066_QaHkESkEkA-20181030-153845-INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH066_181030_1538_INST0_info.txt /data/zaworaca/data/labmates/realtime/NIH066/NIH066_181030_1538_INST0/NIH066_181030_1538_INST0_info.txt

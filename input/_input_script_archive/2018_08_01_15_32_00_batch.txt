@@ -1,0 +1,14 @@
+#2018_08_01_15_32_00
+#subj_path: /Volumes/56C/UTAH_C/NIH059
+#regex: .*
+#raw_dir: data_raw_utah
+#ns6: True | ns5: True | exclude ns3: False | exclude nev: False
+#transfer count: 2
+
+
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180331_1147/180331_1147_utah.ns5 /data/zaworaca/data/NIH059/180331_1147_utah/180331_1147_utah.ns5
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180331_1147/180331_1147_utah.ns3 /data/zaworaca/data/NIH059/180331_1147_utah/180331_1147_utah.ns3
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180331_1147/180331_1147_utah.nev /data/zaworaca/data/NIH059/180331_1147_utah/180331_1147_utah.nev
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180402_1626/180402_1626_utah.ns5 /data/zaworaca/data/NIH059/180402_1626_utah/180402_1626_utah.ns5
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180402_1626/180402_1626_utah.ns3 /data/zaworaca/data/NIH059/180402_1626_utah/180402_1626_utah.ns3
+/Volumes/56C/UTAH_C/NIH059/data_raw_utah/180402_1626/180402_1626_utah.nev /data/zaworaca/data/NIH059/180402_1626_utah/180402_1626_utah.nev

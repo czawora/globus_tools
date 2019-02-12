@@ -1,0 +1,6 @@
+session_path,nsp_suffix,analog_ext,physio_ext,spike_channel_range_start,spike_channel_range_end
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181027_1228,INST0,ns3,ns5,1,128
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181027_1611,INST0,ns3,ns5,1,128
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM/181024_1704,INST0,ns3,ns5,1,128
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM/181024_1424,INST0,ns3,ns5,1,128
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/STIM/181026_1655,INST0,ns3,ns5,1,128

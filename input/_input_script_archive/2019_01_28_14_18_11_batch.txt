@@ -1,0 +1,11 @@
+#2019_01_28_14_18_11
+#subj_path: /Volumes/56E/UTAH_E/NIH064
+#regex_include: (.*utah.*|.*INST0.*)
+#regex_exclude: (.*txt.*|.*csv.*)
+#raw_dir: data_raw
+#ns6: False | ns5: True | analog pulse: ns3 | digital pulse: nev
+#transfer sess count: 182
+
+
+/Volumes/56A/UTAH_A/globus/temp/NIH064_180924_1415_utah_elementInfo.txt /data/FRNU/CZ/test/NIH064/NIH064_180924_1415_utah/NIH064_180924_1415_utah_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH064/data_raw/180924_1415/180924_1415_utah.ns5 /data/FRNU/CZ/test/NIH064/NIH064_180924_1415_utah/NIH064_180924_1415_utah.ns5

@@ -1,0 +1,11 @@
+#2018_08_22_14_20_13
+#subj_path: /Volumes/56C/UTAH_C/NIH054
+#regex: .*utah.*
+#raw_dir: data_raw_utah
+#ns6: False | ns5: True | analog pulse: ns3 | digital pulse: nev
+#transfer count: 1
+
+
+/Volumes/56C/UTAH_C/NIH054/data_raw_utah/171021_1134/171021_1134_utah.ns5 /data/zaworaca/data/ME/NIH054/171021_1134_utah/171021_1134_utah.ns5
+/Volumes/56C/UTAH_C/NIH054/data_raw_utah/171021_1134/171021_1134_utah.ns3 /data/zaworaca/data/ME/NIH054/171021_1134_utah/171021_1134_utah.ns3
+/Volumes/56C/UTAH_C/NIH054/data_raw_utah/171021_1134/171021_1134_utah.nev /data/zaworaca/data/ME/NIH054/171021_1134_utah/171021_1134_utah.nev

@@ -1,0 +1,11 @@
+#2018_08_22_15_28_06
+#subj_path: /Volumes/56C/UTAH_C/NIH053_micro
+#regex: .*micro.*
+#raw_dir: data_raw
+#ns6: False | ns5: True | analog pulse: ns3 | digital pulse: nev
+#transfer count: 1
+
+
+/Volumes/56C/UTAH_C/NIH053_micro/data_raw/171006_1125/171006_1125_micro.ns5 /data/zaworaca/data/ME/NIH053_micro/171006_1125_micro/171006_1125_micro.ns5
+/Volumes/56C/UTAH_C/NIH053_micro/data_raw/171006_1125/171006_1125_micro.ns3 /data/zaworaca/data/ME/NIH053_micro/171006_1125_micro/171006_1125_micro.ns3
+/Volumes/56C/UTAH_C/NIH053_micro/data_raw/171006_1125/171006_1125_micro.nev /data/zaworaca/data/ME/NIH053_micro/171006_1125_micro/171006_1125_micro.nev

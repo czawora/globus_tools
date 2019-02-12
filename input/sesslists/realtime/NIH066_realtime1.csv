@@ -1,0 +1,2 @@
+session_path,nsp_suffix,analog_ext,physio_ext,spike_channel_range_start,spike_channel_range_end
+/Volumes/EEG_56STAGE/stage/working/NIH066/raw/181030_1538,INST0,ns3,ns5,1,128

@@ -1,0 +1,17 @@
+#2018_10_04_12_27_53
+#transfer count: 6
+
+
+/Volumes/56A/UTAH_A/NIH030/data_raw/150705_1620/150705_1620_utah.ns6 /data/zaworaca/data/labmates/RH/NIH030/NIH030_150705_1620_utah/NIH030_150705_1620_utah.ns6
+/Volumes/56A/UTAH_A/NIH030/data_raw/150705_1620/150705_1620_utah.ns3 /data/zaworaca/data/labmates/RH/NIH030/NIH030_150705_1620_utah/NIH030_150705_1620_utah.ns3
+/Volumes/56A/UTAH_A/NIH030/data_raw/150705_1620/150705_1620_utah.nev /data/zaworaca/data/labmates/RH/NIH030/NIH030_150705_1620_utah/NIH030_150705_1620_utah.nev
+/Volumes/56A/UTAH_A/NIH037/data_raw/160202_1555/160202_1555_utah_m.ns6 /data/zaworaca/data/labmates/RH/NIH037/NIH037_160202_1555_utah_m/NIH037_160202_1555_utah_m.ns6
+/Volumes/56A/UTAH_A/NIH037/data_raw/160202_1555/160202_1555_utah_m.nev /data/zaworaca/data/labmates/RH/NIH037/NIH037_160202_1555_utah_m/NIH037_160202_1555_utah_m.nev
+/Volumes/56A/UTAH_A/NIH037/data_raw/160209_1303/160209_1303_utah_m.ns6 /data/zaworaca/data/labmates/RH/NIH037/NIH037_160209_1303_utah_m/NIH037_160209_1303_utah_m.ns6
+/Volumes/56A/UTAH_A/NIH037/data_raw/160209_1303/160209_1303_utah_m.nev /data/zaworaca/data/labmates/RH/NIH037/NIH037_160209_1303_utah_m/NIH037_160209_1303_utah_m.nev
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2110/160306_2110_utah_u.ns6 /data/zaworaca/data/labmates/RH/NIH039/NIH039_160306_2110_utah_u/NIH039_160306_2110_utah_u.ns6
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2110/160306_2110_utah_u.nev /data/zaworaca/data/labmates/RH/NIH039/NIH039_160306_2110_utah_u/NIH039_160306_2110_utah_u.nev
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2110/160306_2110_utah_m.ns6 /data/zaworaca/data/labmates/RH/NIH039/NIH039_160306_2110_utah_m/NIH039_160306_2110_utah_m.ns6
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2110/160306_2110_utah_m.nev /data/zaworaca/data/labmates/RH/NIH039/NIH039_160306_2110_utah_m/NIH039_160306_2110_utah_m.nev
+/Volumes/56B/UTAH_B/NIH039/data_raw/160312_1136/160312_1136_utah_m.ns6 /data/zaworaca/data/labmates/RH/NIH039/NIH039_160312_1136_utah_m/NIH039_160312_1136_utah_m.ns6
+/Volumes/56B/UTAH_B/NIH039/data_raw/160312_1136/160312_1136_utah_m.nev /data/zaworaca/data/labmates/RH/NIH039/NIH039_160312_1136_utah_m/NIH039_160312_1136_utah_m.nev

@@ -1,0 +1,12 @@
+#2018_08_21_14_07_58
+#subj_path: /Volumes/56B/UTAH_B/NIH050
+#regex: .*utah.*
+#raw_dir: data_raw
+#ns6: False | ns5: True | analog pulse: None | digital pulse: nev
+#transfer count: 2
+
+
+/Volumes/56B/UTAH_B/NIH050/data_raw/170629_1025_beh/170629_1025_utah_beh.ns5 /data/zaworaca/data/ME/NIH050_utah/170629_1025_utah_beh/170629_1025_utah_beh.ns5
+/Volumes/56B/UTAH_B/NIH050/data_raw/170629_1025_beh/170629_1025_utah_beh.nev /data/zaworaca/data/ME/NIH050_utah/170629_1025_utah_beh/170629_1025_utah_beh.nev
+/Volumes/56B/UTAH_B/NIH050/data_raw/170705_1031_beh/170705_1031_utah_beh.ns5 /data/zaworaca/data/ME/NIH050_utah/170705_1031_utah_beh/170705_1031_utah_beh.ns5
+/Volumes/56B/UTAH_B/NIH050/data_raw/170705_1031_beh/170705_1031_utah_beh.nev /data/zaworaca/data/ME/NIH050_utah/170705_1031_utah_beh/170705_1031_utah_beh.nev

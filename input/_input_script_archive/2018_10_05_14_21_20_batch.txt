@@ -1,0 +1,10 @@
+#2018_10_05_14_21_20
+#subj_path: /Volumes/56A/UTAH_A/NIH037
+#regex: \d*_\d*_utah_m.*ns.*
+#raw_dir: data_raw
+#date_start: inf
+#date_end: inf
+#ns6: True | ns5: False | analog pulse: None | digital pulse: nev
+#transfer count: 0
+
+

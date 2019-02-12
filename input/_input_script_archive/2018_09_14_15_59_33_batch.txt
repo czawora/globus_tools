@@ -1,0 +1,10 @@
+#2018_09_14_15_59_33
+#subj_path: /Volumes/56B/UTAH_B/NIH039
+#regex: \d+_\d+_utah_u$
+#raw_dir: data_raw
+#ns6: True | ns5: False | analog pulse: None | digital pulse: nev
+#transfer count: 1
+
+
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2010/160306_2010_utah_u.ns6 /data/zaworaca/data/labmates/RH/NIH039/160306_2010_utah_u/160306_2010_utah_u.ns6
+/Volumes/56B/UTAH_B/NIH039/data_raw/160306_2010/160306_2010_utah_u.nev /data/zaworaca/data/labmates/RH/NIH039/160306_2010_utah_u/160306_2010_utah_u.nev

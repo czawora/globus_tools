@@ -1,0 +1,20 @@
+#2018_09_07_17_13_18
+#subj_path: /Volumes/CZ_FRNU/blackrock/NIH062
+#regex: .*
+#raw_dir: data_raw
+#ns6: False | ns5: True | analog pulse: ns3 | digital pulse: nev
+#transfer count: 4
+
+
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1659/180830_1659_nsp2.ns5 /data/zaworaca/data/labmates/DY/NIH062/180830_1659_nsp2/180830_1659_nsp2.ns5
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1659/180830_1659_nsp2.ns3 /data/zaworaca/data/labmates/DY/NIH062/180830_1659_nsp2/180830_1659_nsp2.ns3
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1659/180830_1659_nsp2.nev /data/zaworaca/data/labmates/DY/NIH062/180830_1659_nsp2/180830_1659_nsp2.nev
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1730/180830_1730_nsp2.ns5 /data/zaworaca/data/labmates/DY/NIH062/180830_1730_nsp2/180830_1730_nsp2.ns5
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1730/180830_1730_nsp2.ns3 /data/zaworaca/data/labmates/DY/NIH062/180830_1730_nsp2/180830_1730_nsp2.ns3
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180830_1730/180830_1730_nsp2.nev /data/zaworaca/data/labmates/DY/NIH062/180830_1730_nsp2/180830_1730_nsp2.nev
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1641/180831_1641_nsp2.ns5 /data/zaworaca/data/labmates/DY/NIH062/180831_1641_nsp2/180831_1641_nsp2.ns5
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1641/180831_1641_nsp2.ns3 /data/zaworaca/data/labmates/DY/NIH062/180831_1641_nsp2/180831_1641_nsp2.ns3
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1641/180831_1641_nsp2.nev /data/zaworaca/data/labmates/DY/NIH062/180831_1641_nsp2/180831_1641_nsp2.nev
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1711/180831_1711_nsp2.ns5 /data/zaworaca/data/labmates/DY/NIH062/180831_1711_nsp2/180831_1711_nsp2.ns5
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1711/180831_1711_nsp2.ns3 /data/zaworaca/data/labmates/DY/NIH062/180831_1711_nsp2/180831_1711_nsp2.ns3
+/Volumes/CZ_FRNU/blackrock/NIH062/data_raw/180831_1711/180831_1711_nsp2.nev /data/zaworaca/data/labmates/DY/NIH062/180831_1711_nsp2/180831_1711_nsp2.nev

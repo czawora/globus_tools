@@ -1,0 +1,13 @@
+#2018_10_02_13_11_14
+#transfer count: 3
+
+
+/Volumes/56C/UTAH_C/NIH064/180926_1517_beh/180926_1517_utah_beh.ns5 /data/zaworaca/data/labmates/JW_rush/180926_1517_beh/180926_1517_utah_beh.ns5
+/Volumes/56C/UTAH_C/NIH064/180926_1517_beh/180926_1517_utah_beh.ns3 /data/zaworaca/data/labmates/JW_rush/180926_1517_beh/180926_1517_utah_beh.ns3
+/Volumes/56C/UTAH_C/NIH064/180926_1517_beh/180926_1517_utah_beh.nev /data/zaworaca/data/labmates/JW_rush/180926_1517_beh/180926_1517_utah_beh.nev
+/Volumes/56C/UTAH_C/NIH064/180927_1112_beh/180927_1112_utah_beh.ns5 /data/zaworaca/data/labmates/JW_rush/180927_1112_beh/180927_1112_utah_beh.ns5
+/Volumes/56C/UTAH_C/NIH064/180927_1112_beh/180927_1112_utah_beh.ns3 /data/zaworaca/data/labmates/JW_rush/180927_1112_beh/180927_1112_utah_beh.ns3
+/Volumes/56C/UTAH_C/NIH064/180927_1112_beh/180927_1112_utah_beh.nev /data/zaworaca/data/labmates/JW_rush/180927_1112_beh/180927_1112_utah_beh.nev
+/Volumes/56C/UTAH_C/NIH064/180928_1121_beh/180928_1121_utah_beh.ns5 /data/zaworaca/data/labmates/JW_rush/180928_1121_beh/180928_1121_utah_beh.ns5
+/Volumes/56C/UTAH_C/NIH064/180928_1121_beh/180928_1121_utah_beh.ns3 /data/zaworaca/data/labmates/JW_rush/180928_1121_beh/180928_1121_utah_beh.ns3
+/Volumes/56C/UTAH_C/NIH064/180928_1121_beh/180928_1121_utah_beh.nev /data/zaworaca/data/labmates/JW_rush/180928_1121_beh/180928_1121_utah_beh.nev

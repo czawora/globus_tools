@@ -1,0 +1,6 @@
+/Volumes/56B/UTAH_B/NIH050/data_raw/170627_1027_beh
+micro_beh
+ns3
+ns5
+1
+96

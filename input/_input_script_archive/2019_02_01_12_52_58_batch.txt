@@ -1,0 +1,14 @@
+#2019_02_01_12_52_58
+#subj_path: /Volumes/56E/UTAH_E/NIH069
+#regex_include: .*INST0.*
+#regex_exclude: .*jacksheet.*
+#raw_dir: data_raw_cz
+#ns6: False | ns5: True | analog pulse: ns3 | digital pulse: nev
+#transfer sess count: 1
+
+
+/Volumes/56A/UTAH_A/globus/temp/NIH069_190125_1045_INST0_elementInfo.txt /data/FRNU/CZ/test/NIH069/NIH069_190125_1045_INST0/NIH069_190125_1045_INST0_elementInfo.txt
+/Volumes/56E/UTAH_E/NIH069/data_raw_cz/190125_1045/YfGGmZkGMfb-20190125-104554-INST0.ns5 /data/FRNU/CZ/test/NIH069/NIH069_190125_1045_INST0/NIH069_190125_1045_INST0.ns5
+/Volumes/56E/UTAH_E/NIH069/data_raw_cz/190125_1045/YfGGmZkGMfb-20190125-104554-INST0.ns3 /data/FRNU/CZ/test/NIH069/NIH069_190125_1045_INST0/NIH069_190125_1045_INST0.ns3
+/Volumes/56E/UTAH_E/NIH069/data_raw_cz/190125_1045/YfGGmZkGMfb-20190125-104554-INST0.nev /data/FRNU/CZ/test/NIH069/NIH069_190125_1045_INST0/NIH069_190125_1045_INST0.nev
+/Volumes/56A/UTAH_A/globus/temp/NIH069_190125_1045_INST0_info.txt /data/FRNU/CZ/test/NIH069/NIH069_190125_1045_INST0/NIH069_190125_1045_INST0_info.txt

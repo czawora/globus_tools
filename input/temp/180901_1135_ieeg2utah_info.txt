@@ -1,0 +1,6 @@
+/Volumes/56E/UTAH_E/NIH062/data_raw/180901_1135
+ieeg2utah
+ns3
+ns5
+1
+128
