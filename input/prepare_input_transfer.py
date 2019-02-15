@@ -330,17 +330,18 @@ for sess in session_path_ls:
 							exit(-10)
 
 						found_file = analog_pulse_glob[0]
+						found_file_fname = analog_pulse_glob[0].split("/")[-1]
 
-						if "_" in found_file and "-" in found_file:
-							print("underscore and hyphen present in found_file: " + found_file)
+						if "_" in found_file_fname and "-" in found_file_fname:
+							print("underscore and hyphen present in found_file: " + found_file_fname)
 							print("splitting logic will break on this")
 							print("change code needed")
 							exit(1)
 
-						if "_" in found_file:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file.split("_")[2:])
-						elif "-" in found_file:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file.split("-")[3:])
+						if "_" in found_file_fname:
+							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("_")[2:])
+						elif "-" in found_file_fname:
+							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("-")[3:])
 
 						filesize = os.path.getsize(found_file)
 						session_fileset["analog_pulse_src"] = found_file
@@ -369,17 +370,18 @@ for sess in session_path_ls:
 							exit(-10)
 
 						found_file = digital_pulse_glob[0]
+						found_file_fname = digital_pulse_glob[0].split("/")[-1]
 
-						if "_" in found_file and "-" in found_file:
-							print("underscore and hyphen present in found_file: " + found_file)
+						if "_" in found_file_fname and "-" in found_file_fname:
+							print("underscore and hyphen present in found_file: " + found_file_fname)
 							print("splitting logic will break on this")
 							print("change code needed")
 							exit(1)
 
-						if "_" in found_file:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file.split("_")[2:])
-						elif "-" in found_file:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file.split("-")[3:])
+						if "_" in found_file_fname:
+							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("_")[2:])
+						elif "-" in found_file_fname:
+							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("-")[3:])
 
 						filesize = os.path.getsize(found_file)
 						session_fileset["digital_pulse_src"] = found_file
