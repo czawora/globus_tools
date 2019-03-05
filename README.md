@@ -46,4 +46,4 @@ step 3: prepapre and run the lfp scripts
 
 step 4: return the outputs of lfp, sorts, or both to an FRNU location
 
-- use prepare_input_transfer.py in the globus_tools/output dir
+- use prepare_output_transfer.py in the globus_tools/output dir
