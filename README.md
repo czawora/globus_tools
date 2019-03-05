@@ -4,6 +4,9 @@ how to create LFPs and Mountainsort spikes for a subject
 
 step 1: get the subject's data onto biowulf
 
+- install the globus command line tools from https://docs.globus.org/cli/
+- ensure globus is on your path by typing 'which globus'
+
 - clone the git repo 'globus_tools'
 - find a directory for this repo and run 'git clone https://github.com/czawora/globus_tools.git'
 
