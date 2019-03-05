@@ -39,3 +39,8 @@ step 3: prepapre and run the lfp scripts
 
 - later on, to check if your jobs are still running, run 'sjobs'
 - when you see that all your jobs have completed, you can check the completion status of each session by running /data/FRNU/python_scripts/_utah_ms_pipe_tools/tally_lfp.py
+
+
+step 4: return the outputs of lfp, sorts, or both to an FRNU location
+
+- use prepare_input_transfer.py in the globus_tools/output dir
