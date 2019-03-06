@@ -49,47 +49,51 @@ print("\n\n")
 # arg parse
 parser = argparse.ArgumentParser(description='')
 
+parser.add_argument('--skip_sorts', action='store_true')
+parser.add_argument('--skip_lfps', action='store_true')
 parser.add_argument('--transfer_dirs', nargs="+")
 parser.add_argument('--sources', nargs="+")
 
 args = parser.parse_args()
 
+skip_sorts = args.skip_sorts
+skip_lfps = args.skip_lfps
 transfer_dirs = args.transfer_dirs
 srcs = args.sources
 
 if transfer_dirs is None or srcs is None:
 
-    print("at least one argument is required for --transfer_dirs and --sources")
-    exit(1)
+	print("at least one argument is required for --transfer_dirs and --sources")
+	exit(1)
 
 
 if len(transfer_dirs) != len(srcs):
-    print("provide a transfer directory for every source given")
-    exit(1)
+	print("provide a transfer directory for every source given")
+	exit(1)
 
 
 run_timestamp = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 
 # "subj" level folders, will look in each for session folders
 for src in srcs:
-    print("source = " + src)
+	print("source = " + src)
 
 # archive existing batch file
 if os.path.isfile(output_batch_file):
 
-    existing_batch = open(output_batch_file)
+	existing_batch = open(output_batch_file)
 
-    # skip the # comment char
-    existing_timestamp = existing_batch.readline()[1:].strip("\n")
+	# skip the # comment char
+	existing_timestamp = existing_batch.readline()[1:].strip("\n")
 
-    if os.path.isdir(output_batch_archive) is False:
-        os.mkdir(output_batch_archive)
+	if os.path.isdir(output_batch_archive) is False:
+		os.mkdir(output_batch_archive)
 
-    os.rename(output_batch_file, output_batch_archive + "/" + existing_timestamp + "_batch.txt")
+	os.rename(output_batch_file, output_batch_archive + "/" + existing_timestamp + "_batch.txt")
 
-    existing_batch.close()
+	existing_batch.close()
 
-    os.rename(output_bash_file, output_batch_archive + "/" + existing_timestamp + "_transfer.sh")
+	os.rename(output_bash_file, output_batch_archive + "/" + existing_timestamp + "_transfer.sh")
 
 
 # create new bash
@@ -107,112 +111,116 @@ transfer_count = 0
 # add transfers
 for idx, src in enumerate(srcs):
 
-    current_transfer_dir = transfer_dirs[idx]
+	current_transfer_dir = transfer_dirs[idx]
 
-    print("scanning source: " + src)
-    print("planning to transfer to: " + current_transfer_dir)
+	print("scanning source: " + src)
+	print("planning to transfer to: " + current_transfer_dir)
 
-    # note the src
-    new_batch.write("#src = " + src + "\n")
+	# note the src
+	new_batch.write("#src = " + src + "\n")
 
-    src_splits = src.split("/")
+	src_splits = src.split("/")
 
-    if src_splits[-1] == "":
-        src_name = src_splits[-2]
-    else:
-        src_name = src_splits[-1]
+	if src_splits[-1] == "":
+		src_name = src_splits[-2]
+	else:
+		src_name = src_splits[-1]
 
-    src_glob = glob.glob(src + "/*/spike/outputs") + glob.glob(src + "/*/spike/_ignore_me.txt")
+	if skip_sorts is False:
 
-    sort_src_sessions = list(set( [ f.split("/spike")[0] for f in src_glob ] ))
+		src_glob = glob.glob(src + "/*/spike/outputs") + glob.glob(src + "/*/spike/_ignore_me.txt")
 
-    for sess in sort_src_sessions:
+		sort_src_sessions = list(set( [ f.split("/spike")[0] for f in src_glob ] ))
 
-        print(sess)
+		for sess in sort_src_sessions:
 
-        dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
+			print(sess)
 
-        # check for ignore_mes
-        for f in glob.glob(sess + "/spike/_ignore_me.txt"):
+			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
-            fname = f.split("/")[-1]
+			# check for ignore_mes
+			for f in glob.glob(sess + "/spike/_ignore_me.txt"):
 
-            new_batch.write(sess + "/spike/" + fname)
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/" + fname)
-            new_batch.write("\n")
-            transfer_count += 1
+				fname = f.split("/")[-1]
 
-        for f in glob.glob(sess + "/spike/outputs/*sortSummary.csv") + glob.glob(sess + "/spike/outputs/*spikeWaveform.mat") + glob.glob(sess + "/spike/outputs/*sortFigs"):
+				new_batch.write(sess + "/spike/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
-            fname = f.split("/")[-1]
+			for f in glob.glob(sess + "/spike/outputs/*sortSummary.csv") + glob.glob(sess + "/spike/outputs/*spikeWaveform.mat") + glob.glob(sess + "/spike/outputs/*sortFigs"):
 
-            if os.path.isdir(f):
-                new_batch.write(" --recursive ")
+				fname = f.split("/")[-1]
 
-            new_batch.write(sess + "/spike/outputs/" + fname)
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/sorting/" + fname)
-            new_batch.write("\n")
-            transfer_count += 1
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
 
-        for f in glob.glob(sess + "/spike/outputs/*spikeInfo.mat"):
+				new_batch.write(sess + "/spike/outputs/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/sorting/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
-            fname = f.split("/")[-1]
+			for f in glob.glob(sess + "/spike/outputs/*spikeInfo.mat"):
 
-            if os.path.isdir(f):
-                new_batch.write(" --recursive ")
+				fname = f.split("/")[-1]
 
-            new_batch.write(sess + "/spike/outputs/" + fname)
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/raw/" + fname)
-            new_batch.write("\n")
-            transfer_count += 1
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
 
-    # look for lfp results
-    src_glob = glob.glob(src + "/*/lfp/outputs") + glob.glob(src + "/*/lfp/_ignore_me.txt")
+				new_batch.write(sess + "/spike/outputs/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/raw/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
-    lfp_src_sessions = list(set( [ f.split("/lfp")[0] for f in src_glob ] ))
+	if skip_lfps is False:
 
-    for sess in lfp_src_sessions:
+		# look for lfp results
+		src_glob = glob.glob(src + "/*/lfp/outputs") + glob.glob(src + "/*/lfp/_ignore_me.txt")
 
-        print(sess)
+		lfp_src_sessions = list(set( [ f.split("/lfp")[0] for f in src_glob ] ))
 
-        dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
+		for sess in lfp_src_sessions:
 
-        stimArtifactInfo_glob = glob.glob(sess + "/stimArtifactInfo.mat")
-        if stimArtifactInfo_glob != []:
-            new_batch.write(sess + "/stimArtifactInfo.mat")
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/stim/stimArtifactInfo.mat")
-            new_batch.write("\n")
+			print(sess)
 
-        for f in glob.glob(sess + "/lfp/outputs/refset*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
+			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
-            print(f)
-            fname = f.split("/")[-1]
+			stimArtifactInfo_glob = glob.glob(sess + "/stimArtifactInfo.mat")
+			if stimArtifactInfo_glob != []:
+				new_batch.write(sess + "/stimArtifactInfo.mat")
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/stim/stimArtifactInfo.mat")
+				new_batch.write("\n")
 
-            if os.path.isdir(f):
-                new_batch.write(" --recursive ")
+			for f in glob.glob(sess + "/lfp/outputs/refset*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
 
-            new_batch.write(sess + "/lfp/outputs/" + fname)
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/cleaning/" + fname)
-            new_batch.write("\n")
-            transfer_count += 1
+				print(f)
+				fname = f.split("/")[-1]
 
-        for f in glob.glob(sess + "/lfp/outputs/*processed.mat") + glob.glob(sess + "/lfp/outputs/*noreref.mat"):
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
 
-            fname = f.split("/")[-1]
+				new_batch.write(sess + "/lfp/outputs/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/cleaning/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
-            if os.path.isdir(f):
-                new_batch.write(" --recursive ")
+			for f in glob.glob(sess + "/lfp/outputs/*processed.mat") + glob.glob(sess + "/lfp/outputs/*noreref.mat"):
 
-            new_batch.write(sess + "/lfp/outputs/" + fname)
-            new_batch.write(" ")
-            new_batch.write(dest_sess_level + "/raw/" + fname)
-            new_batch.write("\n")
-            transfer_count += 1
+				fname = f.split("/")[-1]
+
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
+
+				new_batch.write(sess + "/lfp/outputs/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/raw/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
 
 # now write the tranfer bash command
