@@ -24,7 +24,7 @@ if os.path.isdir(sess_info_temp_dir) is False:
 
 ########################################################################################################
 ########################################################################################################
-# make sure environment varibales are in place
+#  make sure environment varibales are in place
 
 globus_ID = open("../globus_ID.csv")
 globus_ID_lines = [l.strip("\n") for l in globus_ID]
