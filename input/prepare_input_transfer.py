@@ -293,7 +293,7 @@ for sess in session_path_ls:
 			session_fileset.update({"session_path": sess_path})
 			session_fileset.update({"session_name": sess})
 
-			session_info_str = current_nsx_fileExt + "\n" + current_analog_pulse_fileExt
+			session_info_str = current_nsx_fileExt + "\n" + current_analog_pulse_fileExt + "\n" + nsp_suffix
 			session_fileset.update({"session_info_str": session_info_str})
 			session_fileset.update({"session_jacksheet": "jacksheetBR_complete.csv"})
 

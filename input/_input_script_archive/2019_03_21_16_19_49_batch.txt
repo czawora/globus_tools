@@ -1,4 +1,4 @@
-#2019_03_21_16_29_13
+#2019_03_21_16_19_49
 #subj_path: /Volumes/72E/UTAH_E/NIH069
 #nsp_suffix: INST0
 #raw_dir: data_raw
