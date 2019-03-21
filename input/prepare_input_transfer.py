@@ -20,34 +20,6 @@ input_batch_file = "input_batch.txt"
 input_bash_file = "input_transfer.sh"
 input_batch_archive = "_input_script_archive"
 
-sess_info_temp_dir = "/Volumes/56A/UTAH_A/globus/temp"
-if os.path.isdir(sess_info_temp_dir) is False:
-	os.mkdir(sess_info_temp_dir)
-
-########################################################################################################
-########################################################################################################
-# make sure environment varibales are in place
-
-globus_ID = open("../globus_ID.csv")
-globus_ID_lines = [l.strip("\n") for l in globus_ID]
-globus_ID.close()
-
-FRNU_GLOBUS_ID = globus_ID_lines[0].split(",")[-1]
-NIH_GLOBUS_ID = globus_ID_lines[2].split(",")[-1]
-
-os.environ["FRNU_GLOBUS"] = FRNU_GLOBUS_ID
-os.environ["NIH_GLOBUS"] = NIH_GLOBUS_ID
-
-print("\n\n")
-
-print("env FRNU_GLOBUS = " + FRNU_GLOBUS_ID)
-print("set FRNU_GLOBUS environment variable to FRNU's Globus endpoint ID specified in ../globus_ID.csv")
-
-print("env NIH_GLOBUS = " + NIH_GLOBUS_ID)
-print("set NIH_GLOBUS environment variable to NIH's Globus endpoint ID specified in ../globus_ID.csv")
-
-print("\n\n")
-
 
 ########################################################################################################
 ########################################################################################################
@@ -81,6 +53,88 @@ dry_run = args.dry_run
 session_path = subj_path + "/" + raw_dir
 
 subj = subj_path.split("/")[-1]
+
+########################################################################################################
+########################################################################################################
+# is the source FRNU56 or FRNU72
+
+FRNU56_dirs = ["56A", "56B", "56C", "56D", "56E", "56PUB"]
+FRNU72_dirs = ["72A", "72B", "72C", "72D", "72E", "72PUB"]
+
+FRNU56_check = any([s in subj_path for s in FRNU56_dirs])
+FRNU72_check = any([s in subj_path for s in FRNU72_dirs])
+
+if FRNU56_check is False and FRNU72_check is False:
+
+	print("you are not transferring from an FRNU56 or FRNU72 drive, the code only supports those two source sets")
+	exit(1)
+
+if FRNU56_check is True and FRNU72_check is True:
+
+	print("your subj_path contains a FRNU56 and a FRNU72 source directory. This is confusing the code")
+	exit(1)
+
+if FRNU56_check is True:
+	FRNU_src = "FRNU56"
+else:
+	FRNU_src = "FRNU72"
+
+
+########################################################################################################
+########################################################################################################
+# set up temp directory
+
+if FRNU_src == "FRNU56":
+
+	if os.path.isdir("/Volumes/56A") is False:
+
+		print("You are not connected to 56A. This connection is required for temp file storage")
+		exit(1)
+
+	sess_info_temp_dir = "/Volumes/56A/globus/temp"
+
+else:
+
+	if os.path.isdir("/Volumes/72A") is False:
+
+		print("You are not connected to 72A. This connection is required for temp file storage")
+		exit(1)
+
+	sess_info_temp_dir = "/Volumes/72A/globus/temp"
+
+
+if os.path.isdir(sess_info_temp_dir) is False:
+	os.mkdir(sess_info_temp_dir)
+
+########################################################################################################
+########################################################################################################
+# make sure environment varibales are in place
+
+globus_ID = pd.read_csv("../globus_ID.csv", header=None)
+
+comment_rows_bin = globus_ID.isnull().any(axis=1).tolist()
+not_comment_rows_bin = [not x for x in comment_rows_bin]
+
+# remove comment lines
+globus_ID = globus_ID[not_comment_rows_bin]
+
+# get the NIH globus ID
+NIH_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains("NIH")][1].tolist()[0]
+FRNU_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains(FRNU_src)][1].tolist()[0]
+
+os.environ["FRNU_GLOBUS"] = FRNU_GLOBUS_ID
+os.environ["NIH_GLOBUS"] = NIH_GLOBUS_ID
+
+print("\n\n")
+
+print("FRNU source detected as : " + FRNU_src)
+print("env FRNU_GLOBUS = " + FRNU_GLOBUS_ID)
+print("set FRNU_GLOBUS environment variable to FRNU's Globus endpoint ID specified in ../globus_ID.csv")
+
+print("env NIH_GLOBUS = " + NIH_GLOBUS_ID)
+print("set NIH_GLOBUS environment variable to NIH's Globus endpoint ID specified in ../globus_ID.csv")
+
+print("\n\n")
 
 
 ########################################################################################################
