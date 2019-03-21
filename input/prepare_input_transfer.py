@@ -175,14 +175,14 @@ for sess in session_path_ls:
 	# check for good session name
 	sessname_match = re.match(datestring_regex, sess)
 
-	if sessname_match is not None:
+	sess_path = session_path + "/" + sess
+	jacksheet_fpath = sess_path + "/jacksheetBR_complete.csv"
+
+	if sessname_match is not None and os.path.isfile(jacksheet_fpath) is True:
 
 		datestring_match = re.findall(datestring_regex, sess)[0]
 
-		sess_path = subj_path + "/" + sess
-
 		# load the jacksheet
-		jacksheet_fpath = sess_path + "/jacksheetBR_complete.csv"
 		jacksheet_data = pd.read_csv(jacksheet_fpath)
 
 		jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == nsp_suffix]
@@ -198,6 +198,8 @@ for sess in session_path_ls:
 
 			if jacksheet_data_nsp_micro_fnames.shape[0] > 1:
 
+				print(sess_path)
+				print(jacksheet_data_nsp_micro_fnames)
 				print("micro channels on chosen nsp are split across multiple nsx files, should not happen!")
 				exit(1)
 
@@ -220,7 +222,10 @@ for sess in session_path_ls:
 			if jacksheet_data_nsp_ain.shape[0] != 0:
 
 				# are these channels present on more than one of: ns2, ns3, or ns4?
-				if jacksheet_data_nsp_ain.shape[0] != 1:
+				if len(set(jacksheet_data_nsp_ain.FileName.tolist())) != 1:
+
+					print(sess_path)
+					print(jacksheet_data_nsp_ain)
 					print("analog ain channels are spread on multiple nsx files in this NSP")
 					exit(2)
 
@@ -240,7 +245,10 @@ for sess in session_path_ls:
 					if jacksheet_data_other_nsp_ain.shape[0] != 0:
 
 						# are these channels present on more than one of: ns2, ns3, or ns4?
-						if jacksheet_data_other_nsp_ain.shape[0] != 1:
+						if len(set(jacksheet_data_other_nsp_ain.FileName.tolist())) != 1:
+
+							print(sess_path)
+							print(jacksheet_data_other_nsp_ain)
 							print("analog ain channels on backup NSP are spread on multiple nsx files")
 							exit(2)
 
@@ -442,6 +450,11 @@ for sess in current_upload_list:
 	new_batch.write(sess["session_path"] + "/" + sess["analog_physio_src"])
 	new_batch.write(" ")
 	new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + sess["analog_physio_dest"])
+	new_batch.write("\n")
+
+	new_batch.write(sess["session_path"] + "/" + sess["session_jacksheet"])
+	new_batch.write(" ")
+	new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + sess["session_jacksheet"])
 	new_batch.write("\n")
 
 	if sess["analog_pulse_src"] != "":
