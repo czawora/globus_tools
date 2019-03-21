@@ -3,13 +3,13 @@
 import os
 import datetime
 import argparse
-import glob
 import re
 import csv
-from random import sample
+import pandas as pd
+
 
 def takeDate(elem):
-	return((elem["date_YMD"], elem["date_HM"]))
+	return(elem["date_YMD_HM"])
 
 
 abspath = os.path.abspath(__file__)
@@ -48,86 +48,30 @@ print("set NIH_GLOBUS environment variable to NIH's Globus endpoint ID specified
 
 print("\n\n")
 
-########################################################################################################
-########################################################################################################
-# load implant region codes
-
-implant_region_code_lines = []
-
-implant_region_codes_f = open("../implant_region_codes.csv")
-implant_region_codes_csv = csv.reader(implant_region_codes_f, delimiter=",")
-
-implant_region_code_lines = [l for l in implant_region_codes_csv]
-
-implant_region_codes_f.close()
-
-implant_region_names = [l[0].strip(" ") for l in implant_region_code_lines]
-implant_region_numcode = [l[1].strip(" ") for l in implant_region_code_lines]
-
-
-########################################################################################################
-########################################################################################################
-# load micro reference sets
-
-micro_reference_sets_lines = []
-
-micro_reference_sets_f = open("../micro_reference_sets.csv")
-micro_reference_sets_csv = csv.reader(micro_reference_sets_f, delimiter=",")
-
-micro_reference_sets_lines = [l for l in micro_reference_sets_csv]
-
-micro_reference_sets_f.close()
-
-micro_reference_set_name = [l[0].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_subj = [l[1].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_channel_string = [l[2].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_channel_num_set = [l[3].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_array_num = [l[4].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_array_location = [l[5].strip(" ") for l in micro_reference_sets_lines]
-micro_reference_description = [l[6].strip(" ") for l in micro_reference_sets_lines]
-
 
 ########################################################################################################
 ########################################################################################################
 
-parser = argparse.ArgumentParser(description = 'build list of dir + files to transfer to biowulf, also write transfer script')
+parser = argparse.ArgumentParser(description='build list of dir + files to transfer to biowulf, also write transfer script')
 
 parser.add_argument('subj_path')
 parser.add_argument('biowulf_dest_path')
-parser.add_argument('--fname_regex_include', default = '.*')
-parser.add_argument('--fname_regex_exclude', default = '#')
-parser.add_argument('--raw_dir', default = 'data_raw')
-parser.add_argument('--sesslist', default = "")
-
-parser.add_argument('--ns5', action='store_true')
-parser.add_argument('--ns6', action='store_true')
-
-parser.add_argument('--analog_pulse', default = 'ns3', nargs = '?', choices = ['ns2', 'ns3', 'ns4', 'ns5', 'ns6', 'None'], help = 'which file extension in the session folder contains the analog pulses, or None to ignore')
-parser.add_argument('--digital_pulse', default = 'nev', nargs = '?', choices = ['nev', 'None'], help = 'which file extension in the session folder contains the digital pulses, or None to ignore')
+parser.add_argument('nsp_suffix')
+parser.add_argument('--raw_dir', default='data_raw')
+parser.add_argument('--sesslist', default='')
 
 parser.add_argument('--dry_run', action='store_true')
 
 parser.add_argument('--skip_backup_analog', action='store_false')
 parser.add_argument('--skip_backup_digital', action='store_false')
 
-parser.add_argument('--reference_set', default = '', nargs='+')
-
 args = parser.parse_args()
 
 subj_path = args.subj_path
 biowulf_dest_path = args.biowulf_dest_path
-fname_regex_include = args.fname_regex_include
-fname_regex_exclude = args.fname_regex_exclude
+nsp_suffix = args.nsp_suffix
 raw_dir = args.raw_dir
 sesslist = args.sesslist
-
-reference_set = args.reference_set
-
-ns5 = args.ns5
-ns6 = args.ns6
-
-analog_pulse = args.analog_pulse
-digital_pulse = args.digital_pulse
 
 use_backup_analog = args.skip_backup_analog
 use_backup_digital = args.skip_backup_digital
@@ -138,12 +82,6 @@ session_path = subj_path + "/" + raw_dir
 
 subj = subj_path.split("/")[-1]
 
-include_re_pattern = re.compile(fname_regex_include)
-exclude_re_pattern = re.compile(fname_regex_exclude)
-
-if ns5 and ns6:
-	print("only choose either ns5 or ns6, there should be no reason to need both")
-	exit(2)
 
 ########################################################################################################
 ########################################################################################################
@@ -156,34 +94,6 @@ if sesslist != "" and os.path.isfile(sesslist) is False:
 if os.path.isdir(subj_path) is False:
 	print("value passed as --subj_path is not a valid path")
 	exit(-1)
-
-ref_set_indices = []
-ref_set_region_numcodes = []
-
-for ref_set in reference_set:
-
-	if ref_set is "" or ref_set not in micro_reference_set_name:
-		print("reference_set must be a string present in the first column of this table")
-
-		for el, idx in enumerate(micro_reference_set_name):
-			print("\t".join([micro_reference_set_name[idx], micro_reference_subj[idx], micro_reference_channel_string[idx], micro_reference_channel_num_set[idx], micro_reference_array_num[idx], micro_reference_array_location[idx], micro_reference_description[idx]]))
-
-		print()
-		exit(1)
-
-	else:
-		reference_set_index = micro_reference_set_name.index(ref_set)
-		implant_region_index = implant_region_names.index(micro_reference_array_location[reference_set_index])
-
-		ref_set_region_numcodes.append(implant_region_numcode[implant_region_index])
-		ref_set_indices.append(reference_set_index)
-
-########################################################################################################
-########################################################################################################
-# gather list of files in raw_dir
-# xpecting files folders to have dddddd_dddd.*
-
-matching_nsp_strings = []
 
 datestring_regex = re.compile(r'(\d\d\d\d\d\d_\d\d\d\d).*')
 
@@ -209,203 +119,171 @@ id_counter = 1
 for sess in session_path_ls:
 
 	# check for good session name
-
 	sessname_match = re.match(datestring_regex, sess)
 
 	if sessname_match is not None:
 
 		datestring_match = re.findall(datestring_regex, sess)[0]
-		datestring_YMD = datestring_match.split("_")[0]
-		datestring_HM = datestring_match.split("_")[1]
-		# good session name, check for goood filename
 
-		current_sess_path = session_path + "/" + sess
+		sess_path = subj_path + "/" + sess
 
-		sess_dir_ls = os.listdir(current_sess_path)
+		# load the jacksheet
+		jacksheet_fpath = sess_path + "/jacksheetBR_complete.csv"
+		jacksheet_data = pd.read_csv(jacksheet_fpath)
 
-		session_unique_filenames = list(set( [f[:-4] for f in sess_dir_ls] ))
+		jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == nsp_suffix]
+		jacksheet_data_nsp_micro = jacksheet_data.loc[jacksheet_data["MicroDevNum"] >= 1]
 
-		for f in session_unique_filenames:
+		jacksheet_data_other_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] != nsp_suffix]
 
-			# session name can be of two types
-			# 170311_0001_utah --> date_time_nsp
-			# YfGGmZkGMfb-20190118-102433-INST0 --> codename-date-time-nsp
-			#
-			# if first one: split on "_" and append datestring_match + sess.split(end)
-			# if second one: split on "-" and append datestring_match + sess.split(end)
+		# check that there are micro channels with this NSPsuffix
+		if jacksheet_data_nsp_micro.shape[0] != 0:
 
-			if "_" in f and "-" in f:
-				print("underscore and hyphen present in f: " + f)
-				print("splitting logic will break on this")
-				print("change code needed")
+			# are all the remaining channels from the same nsx file
+			jacksheet_data_nsp_micro_fnames = jacksheet_data_nsp_micro.FileName.unique()
+
+			if jacksheet_data_nsp_micro_fnames.shape[0] > 1:
+
+				print("micro channels on chosen nsp are split across multiple nsx files, should not happen!")
 				exit(1)
 
-			if "_" in f:
-				sess_name = datestring_match + "_" + "_".join(f.split("_")[2:])
-			elif "-" in f:
-				sess_name = datestring_match + "_" + "_".join(f.split("-")[3:])
+			# found an nsx file to transfer
+			current_nsx_file = jacksheet_data_nsp_micro_fnames[0]
+			current_nsx_fileExt = current_nsx_file[-3:]
 
-			if ns5:
+			# find an nev and ns3 file in this nsp
+			current_analog_pulse_file = ""
+			current_analog_pulse_fileExt = ""
+			current_analog_pulse_nsp = ""
 
-				session_info_str = "\n".join([analog_pulse, "ns5"])
+			current_digital_pulse_file = ""
+			current_digital_pulse_nsp = ""
+
+			# first analog pulses: find non-ns5/6 files that contain an ain channel
+			jacksheet_data_nsp_ain = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("ns") & (jacksheet_data_nsp["SampFreq"] < 3e4)]
+
+			# any results?
+			if jacksheet_data_nsp_ain.shape[0] != 0:
+
+				# are these channels present on more than one of: ns2, ns3, or ns4?
+				if jacksheet_data_nsp_ain.shape[0] != 1:
+					print("analog ain channels are spread on multiple nsx files in this NSP")
+					exit(2)
+
+				current_analog_pulse_file = jacksheet_data_nsp_ain.FileName.tolist()[0]
+				current_analog_pulse_nsp = jacksheet_data_nsp_ain.NSPsuffix.tolist()[0]
+				current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
+
+			# found no files, if allowed used the ain's from the other NSP
 			else:
 
-				session_info_str = "\n".join([analog_pulse, "ns6"])
+				if use_backup_analog is True:
+
+					# find non-ns5/6 files that contain an ain channel
+					jacksheet_data_other_nsp_ain = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("ns") & (jacksheet_data_other_nsp["SampFreq"] < 3e4)]
+
+					# any results?
+					if jacksheet_data_other_nsp_ain.shape[0] != 0:
+
+						# are these channels present on more than one of: ns2, ns3, or ns4?
+						if jacksheet_data_other_nsp_ain.shape[0] != 1:
+							print("analog ain channels on backup NSP are spread on multiple nsx files")
+							exit(2)
+
+						print("****** using analog pulse file from other NSP *******")
+						current_analog_pulse_file = jacksheet_data_other_nsp_ain.FileName.tolist()[0]
+						current_analog_pulse_nsp = jacksheet_data_other_nsp_ain.NSPsuffix.tolist()[0]
+						current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
+
+					else:
+						print("****** for session: " + sess + ", no analog pulses on either NSP *******")
+
+			# now look for nev files
+			jacksheet_data_nsp_din = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("nev")]
+
+			# any results?
+			if jacksheet_data_nsp_din.shape[0] != 0:
+
+				current_digital_pulse_file = jacksheet_data_nsp_din.FileName.tolist()[0]
+				current_digital_pulse_nsp = jacksheet_data_nsp_din.NSPsuffix.tolist()[0]
+
+			# check other nsp for nev file
+			else:
+
+				if use_backup_digital is True:
+
+					jacksheet_data_other_nsp_din = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("nev")]
+
+					# any results?
+					if jacksheet_data_other_nsp_din.shape[0] != 0:
+
+						print("****** using digital pulse file from other NSP *******")
+						current_digital_pulse_file = jacksheet_data_other_nsp_din.FileName.tolist()[0]
+						current_digital_pulse_nsp = jacksheet_data_other_nsp_din.NSPsuffix.tolist()[0]
+
+					else:
+						print("****** for session: " + sess + ", no digital pulses on either NSP *******")
 
 			session_fileset = {}
 
-			session_fileset.update({"date_YMD": datestring_YMD})
-			session_fileset.update({"date_HM": datestring_HM})
+			session_fileset.update({"date_YMD_HM": datestring_match})
 
-			session_fileset.update({"session_path": current_sess_path})
-			session_fileset.update({"session_name": sess_name})
+			session_fileset.update({"session_path": sess_path})
+			session_fileset.update({"session_name": sess})
+
+			session_info_str = current_nsx_fileExt + "\n" + current_analog_pulse_fileExt
 			session_fileset.update({"session_info_str": session_info_str})
+			session_fileset.update({"session_jacksheet": "jacksheetBR_complete.csv"})
 
-			session_fileset.update({"ns6": ""})
-			session_fileset.update({"ns6_filesize": 0})
+			session_fileset.update({"analog_physio_src": current_nsx_file})
+			session_fileset.update({"analog_physio_dest": subj + "_" + datestring_match + "_" + nsp_suffix + "." + current_nsx_fileExt})
+			session_fileset.update({"analog_physio_filesize": os.path.getsize(sess_path + "/" + current_nsx_file)})
 
-			session_fileset.update({"ns5": ""})
-			session_fileset.update({"ns5_filesize": 0})
+			if current_analog_pulse_file != "":
 
-			session_fileset.update({"analog_pulse_src": ""})
-			session_fileset.update({"analog_pulse_dest": ""})
-			session_fileset.update({"analog_pulse_filesize": 0})
+				session_fileset.update({"analog_pulse_src": current_analog_pulse_file})
+				session_fileset.update({"analog_pulse_dest": subj + "_" + datestring_match + "_" + current_analog_pulse_nsp + "." + current_analog_pulse_fileExt})
+				session_fileset.update({"analog_pulse_filesize": os.path.getsize(sess_path + "/" + current_analog_pulse_file)})
 
-			session_fileset.update({"digital_pulse_src": ""})
-			session_fileset.update({"digital_pulse_dest": ""})
-			session_fileset.update({"digital_pulse_filesize": 0})
+			else:
 
-			# for debugging
-			session_fileset.update({"current_sess_unique_string": f})
-			session_fileset.update({"sess_unique_list": session_unique_filenames})
+				session_fileset.update({"analog_pulse_src": ""})
+				session_fileset.update({"analog_pulse_dest": ""})
+				session_fileset.update({"analog_pulse_filesize": 0})
+
+			if current_digital_pulse_file != "":
+
+				session_fileset.update({"digital_pulse_src": current_digital_pulse_file})
+				session_fileset.update({"digital_pulse_dest": subj + "_" + datestring_match + "_" + current_digital_pulse_nsp + ".nev"})
+				session_fileset.update({"digital_pulse_filesize": os.path.getsize(sess_path + "/" + current_digital_pulse_file)})
+
+			else:
+
+				session_fileset.update({"digital_pulse_src": ""})
+				session_fileset.update({"digital_pulse_dest": ""})
+				session_fileset.update({"digital_pulse_filesize": 0})
+
 			session_fileset.update({"id": id_counter})
-			id_counter += 1
-
-			if re.match(include_re_pattern, f) is not None and re.match(exclude_re_pattern, f) is None:
-
-				matching_nsp_strings.append(f)
-
-				ns6_glob = glob.glob(current_sess_path + "/*.ns6")
-				ns5_glob = glob.glob(current_sess_path + "/*.ns5")
-				analog_pulse_glob = glob.glob(current_sess_path + "/*." + analog_pulse)
-				digital_pulse_glob = glob.glob(current_sess_path + "/*." + digital_pulse)
-
-				if ns6 and ns6_glob != []:
-
-					for found_file in ns6_glob:
-
-						if re.match(include_re_pattern, found_file) != None and re.match(exclude_re_pattern, found_file) == None:
-
-							filesize = os.path.getsize(found_file)
-							session_fileset["ns6"] = found_file.split("/")[-1]
-							session_fileset["ns6_filesize"] = filesize
-
-				if ns5 and ns5_glob != []:
-
-					for found_file in ns5_glob:
-
-						if re.match(include_re_pattern, found_file) != None and re.match(exclude_re_pattern, found_file) == None:
-
-							filesize = os.path.getsize(found_file)
-							session_fileset["ns5"] = found_file.split("/")[-1]
-							session_fileset["ns5_filesize"] = filesize
-
-				if analog_pulse != "None" and analog_pulse_glob != []:
-
-					for found_file in analog_pulse_glob:
-
-						if re.match(include_re_pattern, found_file) != None and re.match(exclude_re_pattern, found_file) == None:
-
-							filesize = os.path.getsize(found_file)
-							session_fileset["analog_pulse_src"] = found_file
-							session_fileset["analog_pulse_dest"] = sess_name + "." + analog_pulse
-							session_fileset["analog_pulse_filesize"] = filesize
-
-					if session_fileset["analog_pulse_src"] is "" and use_backup_analog:
-						# there was no analog pulse file with the specified combo of regex + ext found in the folder
-						# in this case, the glob only contains at most one other file with the chosen extension, (assuming only 2 NSPs) so take it
-
-						if len(analog_pulse_glob) > 1:
-							print("the day has come! length of analog pulse glob is > 1 when looking for a backup file from the other nsp. Edit code to handle this case.")
-							exit(-10)
-
-						found_file = analog_pulse_glob[0]
-						found_file_fname = analog_pulse_glob[0].split("/")[-1]
-
-						if "_" in found_file_fname and "-" in found_file_fname:
-							print("underscore and hyphen present in found_file: " + found_file_fname)
-							print("splitting logic will break on this")
-							print("change code needed")
-							exit(1)
-
-						if "_" in found_file_fname:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("_")[2:])
-						elif "-" in found_file_fname:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("-")[3:])
-
-						filesize = os.path.getsize(found_file)
-						session_fileset["analog_pulse_src"] = found_file
-						session_fileset["analog_pulse_dest"] = renamed_found_file
-						session_fileset["analog_pulse_filesize"] = filesize
-
-						print("using analog pulse file from other nsp ** " + session_fileset["analog_pulse_src"] + " --> " + session_fileset["analog_pulse_dest"])
-
-				if digital_pulse is not "None" and digital_pulse_glob != []:
-
-					for found_file in digital_pulse_glob:
-
-						if re.match(include_re_pattern, found_file) is not None and re.match(exclude_re_pattern, found_file) is None:
-
-							filesize = os.path.getsize(found_file)
-							session_fileset["digital_pulse_src"] = found_file
-							session_fileset["digital_pulse_dest"] = sess_name + "." + digital_pulse
-							session_fileset["digital_pulse_filesize"] = filesize
-
-					if session_fileset["digital_pulse_src"] is "" and use_backup_digital:
-						# there was no digital pulse file with the specified combo of regex + ext found in the folder
-						# in this case, the glob is non-empty and only contains at most one other file with the chosen extension, so take it
-
-						if len(digital_pulse_glob) > 1:
-							print("the day has come! length of digital pulse glob is > 1 when looking for a backup file from the other nsp. Edit code to handle this case.")
-							exit(-10)
-
-						found_file = digital_pulse_glob[0]
-						found_file_fname = digital_pulse_glob[0].split("/")[-1]
-
-						if "_" in found_file_fname and "-" in found_file_fname:
-							print("underscore and hyphen present in found_file: " + found_file_fname)
-							print("splitting logic will break on this")
-							print("change code needed")
-							exit(1)
-
-						if "_" in found_file_fname:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("_")[2:])
-						elif "-" in found_file_fname:
-							renamed_found_file = datestring_match + "_" + "_".join(found_file_fname.split("-")[3:])
-
-						filesize = os.path.getsize(found_file)
-						session_fileset["digital_pulse_src"] = found_file
-						session_fileset["digital_pulse_dest"] = renamed_found_file
-						session_fileset["digital_pulse_filesize"] = filesize
-
-						print("using digital pulse file from other nsp ** session_fileset" + ["digital_pulse_src"] + " --> " + session_fileset["digital_pulse_dest"])
-
-			session_fileset.update({"session_filesize":  session_fileset["ns6_filesize"] + session_fileset["ns5_filesize"]} )
-			session_fileset.update({"session_concat_string": session_fileset["ns6"] + session_fileset["ns5"] + session_fileset["digital_pulse_src"] + session_fileset["analog_pulse_src"]})
+			session_fileset.update({"session_concat_string": session_fileset["analog_physio_src"] + session_fileset["digital_pulse_src"] + session_fileset["analog_pulse_src"]})
+			session_fileset.update({"session_filesize": session_fileset["analog_physio_filesize"]})
 
 			recording_filesets.append(session_fileset)
 
 
+# sort the filesets
 recording_filesets = sorted(recording_filesets, key=takeDate)
 
+# seperate the empty ones
 empty_filesets = [s for s in recording_filesets if s["session_filesize"] == 0]
 
+# from the non-empty ones
 input_filesets = [s for s in recording_filesets if s["session_filesize"] != 0]
 input_session_size = sum([s["session_filesize"] for s in input_filesets])
 input_session_names = [s["session_name"] for s in input_filesets]
 
 print("num filesets: " + str(len(input_filesets)))
-# remove filesets that include all the same files
+
+# remove filesets that include all the same files, might not be necessary after switch to jacksheet
 for rec_set1 in input_filesets:
 	for rec_set2 in input_filesets:
 
@@ -500,62 +378,30 @@ new_batch = open(input_batch_file, 'w')
 # write timestamp
 new_batch.write("#" + run_timestamp + "\n")
 new_batch.write("#subj_path: " + subj_path + "\n")
-new_batch.write("#regex_include: " + fname_regex_include + "\n")
-new_batch.write("#regex_exclude: " + fname_regex_exclude + "\n")
+new_batch.write("#nsp_suffix: " + nsp_suffix + "\n")
 new_batch.write("#raw_dir: " + raw_dir + "\n")
-new_batch.write("#ns6: " + str(ns6) + " | ns5: " + str(ns5) + " | analog pulse: " + analog_pulse + " | digital pulse: " + digital_pulse + "\n")
 new_batch.write("#transfer sess count: " + str(transfer_count) + "\n")
 new_batch.write("\n\n")
 
 for sess in current_upload_list:
 
-	elementInfo_fpath = sess_info_temp_dir + "/" + subj + "_" + sess["session_name"] + "_elementInfo.txt"
-	elementInfo_f = open(elementInfo_fpath, 'w')
-
-	for idx, ref_set in enumerate(reference_set):
-
-		reference_set_index = ref_set_indices[idx]
-		current_implant_region_numcode = ref_set_region_numcodes[idx]
-
-		elementInfo_f.write("\"" + "\",\"".join([micro_reference_set_name[reference_set_index], micro_reference_subj[reference_set_index], micro_reference_channel_string[reference_set_index], micro_reference_channel_num_set[reference_set_index], micro_reference_array_num[reference_set_index], current_implant_region_numcode, micro_reference_description[reference_set_index]]) + "\"\n")
-
-	elementInfo_f.close()
-
-	new_batch.write(elementInfo_fpath)
+	new_batch.write(sess["session_path"] + "/" + sess["analog_physio_src"])
 	new_batch.write(" ")
-	new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["session_name"] + "_elementInfo.txt")
+	new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + sess["analog_physio_dest"])
 	new_batch.write("\n")
-
-	if sess["ns6"] != "":
-
-		new_batch.write(sess["session_path"] + "/" + sess["ns6"])
-		new_batch.write(" ")
-		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["session_name"] + ".ns6")
-		new_batch.write("\n")
-
-	if sess["ns5"] != "":
-
-		new_batch.write(sess["session_path"] + "/" + sess["ns5"])
-		new_batch.write(" ")
-		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["session_name"] + ".ns5")
-		new_batch.write("\n")
 
 	if sess["analog_pulse_src"] != "":
 
-		new_batch.write(sess["analog_pulse_src"])
-		# new_batch.write(sess["session_path"] + "/" + sess["analog_pulse"])
+		new_batch.write(sess["session_path"] + "/" + sess["analog_pulse_src"])
 		new_batch.write(" ")
-		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["analog_pulse_dest"])
-		# new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["session_name"] + "." + analog_pulse)
+		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + sess["analog_pulse_dest"])
 		new_batch.write("\n")
 
 	if sess["digital_pulse_src"] != "":
 
-		new_batch.write(sess["digital_pulse_src"])
-		# new_batch.write(sess["session_path"] + "/" + sess["digital_pulse"])
+		new_batch.write(sess["session_path"] + "/" + sess["digital_pulse_src"])
 		new_batch.write(" ")
-		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["digital_pulse_dest"])
-		# new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + subj + "_" + sess["session_name"] + "." + digital_pulse)
+		new_batch.write(biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "/" + sess["digital_pulse_dest"])
 		new_batch.write("\n")
 
 	sess_info_file = open(sess_info_temp_dir + "/" + subj + "_" + sess["session_name"] + "_info.txt", 'w')
@@ -569,9 +415,6 @@ for sess in current_upload_list:
 
 new_batch.close()
 
-print()
-print("debug check, random sample of strings that passed regex filters:")
-print(sample(matching_nsp_strings, min(len(matching_nsp_strings), 30)))
 
 print("\n\n")
 print("biowulf_dest_path: " + biowulf_dest_path)
