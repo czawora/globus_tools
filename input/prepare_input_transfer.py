@@ -447,7 +447,7 @@ new_batch.write("\n\n")
 
 for sess in current_upload_list:
 
-	transfer_dest_sess_dir = biowulf_dest_path + "/" + subj + "_" + sess["session_name"] + "_" + nsp_suffix
+	transfer_dest_sess_dir = biowulf_dest_path + "/" + subj + "_" + sess["session_name"]
 
 	new_batch.write(sess["session_path"] + "/" + sess["analog_physio_src"])
 	new_batch.write(" ")
@@ -473,13 +473,14 @@ for sess in current_upload_list:
 		new_batch.write(transfer_dest_sess_dir + "/" + sess["digital_pulse_dest"])
 		new_batch.write("\n")
 
-	sess_info_file = open(sess_info_temp_dir + "/" + subj + "_" + sess["session_name"] + "_" + nsp_suffix + "_info.txt", 'w')
+	sess_info_filename = subj + "_" + sess["date_YMD_HM"] + "_" + nsp_suffix + "_info.txt"
+	sess_info_file = open(sess_info_temp_dir + "/" + sess_info_filename, 'w')
 	sess_info_file.write(sess["session_info_str"])
 	sess_info_file.close()
 
-	new_batch.write(sess_info_temp_dir + "/" + subj + "_" + sess["session_name"] + "_" + nsp_suffix + "_info.txt")
+	new_batch.write(sess_info_temp_dir + "/" + sess_info_filename)
 	new_batch.write(" ")
-	new_batch.write(transfer_dest_sess_dir + "/" + subj + "_" + sess["session_name"] + "_" + nsp_suffix + "_info.txt")
+	new_batch.write(transfer_dest_sess_dir + "/" + sess_info_filename)
 	new_batch.write("\n")
 
 new_batch.close()
