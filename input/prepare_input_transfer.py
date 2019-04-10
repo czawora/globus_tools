@@ -252,7 +252,7 @@ for sess in session_path_ls:
 							print("analog ain channels on backup NSP are spread on multiple nsx files")
 							exit(2)
 
-						print("****** using analog pulse file from other NSP *******")
+						print("****** using analog pulse file from other NSP ******* " + sess)
 						current_analog_pulse_file = jacksheet_data_other_nsp_ain.FileName.tolist()[0]
 						current_analog_pulse_nsp = jacksheet_data_other_nsp_ain.NSPsuffix.tolist()[0]
 						current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
@@ -279,7 +279,7 @@ for sess in session_path_ls:
 					# any results?
 					if jacksheet_data_other_nsp_din.shape[0] != 0:
 
-						print("****** using digital pulse file from other NSP *******")
+						print("****** using digital pulse file from other NSP ******* " + sess)
 						current_digital_pulse_file = jacksheet_data_other_nsp_din.FileName.tolist()[0]
 						current_digital_pulse_nsp = jacksheet_data_other_nsp_din.NSPsuffix.tolist()[0]
 
