@@ -5,6 +5,7 @@ import datetime
 import argparse
 import re
 import csv
+import sys
 import pandas as pd
 
 
@@ -41,7 +42,7 @@ args = parser.parse_args()
 
 subj_path = args.subj_path
 biowulf_dest_path = args.biowulf_dest_path
-nsp_suffix = args.nsp_suffix
+nsp_suffix_set = args.nsp_suffix
 raw_dir = args.raw_dir
 sesslist = args.sesslist
 
@@ -168,168 +169,178 @@ else:
 
 	sesslist_f.close()
 
+input_nsp_suffixes = nsp_suffix_set.split("+")
+
+all_unique_nsp_suffixes = []
+
 id_counter = 1
 
 for sess in session_path_ls:
 
-	# check for good session name
-	sessname_match = re.match(datestring_regex, sess)
+	for current_nsp_suffix in input_nsp_suffixes:
 
-	sess_path = session_path + "/" + sess
-	jacksheet_fpath = sess_path + "/jacksheetBR_complete.csv"
+		# check for good session name
+		sessname_match = re.match(datestring_regex, sess)
 
-	if sessname_match is not None and os.path.isfile(jacksheet_fpath) is True:
+		sess_path = session_path + "/" + sess
+		jacksheet_fpath = sess_path + "/jacksheetBR_complete.csv"
 
-		datestring_match = re.findall(datestring_regex, sess)[0]
+		if sessname_match is not None and os.path.isfile(jacksheet_fpath) is True:
 
-		# load the jacksheet
-		jacksheet_data = pd.read_csv(jacksheet_fpath)
+			datestring_match = re.findall(datestring_regex, sess)[0]
 
-		jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == nsp_suffix]
-		jacksheet_data_nsp_micro = jacksheet_data.loc[jacksheet_data["MicroDevNum"] >= 1]
+			# load the jacksheet
+			jacksheet_data = pd.read_csv(jacksheet_fpath)
 
-		jacksheet_data_other_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] != nsp_suffix]
+			# collect all nsp suffixes used for this patient
+			all_unique_nsp_suffixes += jacksheet_data.NSPsuffix.unique().tolist()
 
-		# check that there are micro channels with this NSPsuffix
-		if jacksheet_data_nsp_micro.shape[0] != 0:
+			jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == current_nsp_suffix]
+			jacksheet_data_nsp_micro = jacksheet_data_nsp.loc[jacksheet_data_nsp["MicroDevNum"] >= 1]
 
-			# are all the remaining channels from the same nsx file
-			jacksheet_data_nsp_micro_fnames = jacksheet_data_nsp_micro.FileName.unique()
+			jacksheet_data_other_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] != current_nsp_suffix]
 
-			if jacksheet_data_nsp_micro_fnames.shape[0] > 1:
+			# check that there are micro channels with this NSPsuffix
+			if jacksheet_data_nsp_micro.shape[0] != 0:
 
-				print(sess_path)
-				print(jacksheet_data_nsp_micro_fnames)
-				print("micro channels on chosen nsp are split across multiple nsx files, should not happen!")
-				exit(1)
+				# are all the remaining channels from the same nsx file
+				jacksheet_data_nsp_micro_fnames = jacksheet_data_nsp_micro.FileName.unique()
 
-			# found an nsx file to transfer
-			current_nsx_file = jacksheet_data_nsp_micro_fnames[0]
-			current_nsx_fileExt = current_nsx_file[-3:]
-
-			# find an nev and ns3 file in this nsp
-			current_analog_pulse_file = ""
-			current_analog_pulse_fileExt = ""
-			current_analog_pulse_nsp = ""
-
-			current_digital_pulse_file = ""
-			current_digital_pulse_nsp = ""
-
-			# first analog pulses: find non-ns5/6 files that contain an ain channel
-			jacksheet_data_nsp_ain = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("ns") & (jacksheet_data_nsp["SampFreq"] < 3e4)]
-
-			# any results?
-			if jacksheet_data_nsp_ain.shape[0] != 0:
-
-				# are these channels present on more than one of: ns2, ns3, or ns4?
-				if len(set(jacksheet_data_nsp_ain.FileName.tolist())) != 1:
+				if jacksheet_data_nsp_micro_fnames.shape[0] > 1:
 
 					print(sess_path)
-					print(jacksheet_data_nsp_ain)
-					print("analog ain channels are spread on multiple nsx files in this NSP")
-					exit(2)
+					print(jacksheet_data_nsp_micro_fnames)
+					print("micro channels on chosen nsp are split across multiple nsx files, should not happen!")
+					exit(1)
 
-				current_analog_pulse_file = jacksheet_data_nsp_ain.FileName.tolist()[0]
-				current_analog_pulse_nsp = jacksheet_data_nsp_ain.NSPsuffix.tolist()[0]
-				current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
+				# found an nsx file to transfer
+				current_nsx_file = jacksheet_data_nsp_micro_fnames[0]
+				current_nsx_fileExt = current_nsx_file[-3:]
 
-			# found no files, if allowed used the ain's from the other NSP
-			else:
+				# find an nev and ns3 file in this nsp
+				current_analog_pulse_file = ""
+				current_analog_pulse_fileExt = ""
+				current_analog_pulse_nsp = ""
 
-				if use_backup_analog is True:
+				current_digital_pulse_file = ""
+				current_digital_pulse_nsp = ""
 
-					# find non-ns5/6 files that contain an ain channel
-					jacksheet_data_other_nsp_ain = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("ns") & (jacksheet_data_other_nsp["SampFreq"] < 3e4)]
+				# first analog pulses: find non-ns5/6 files that contain an ain channel
+				jacksheet_data_nsp_ain = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("ns") & (jacksheet_data_nsp["SampFreq"] < 3e4)]
 
-					# any results?
-					if jacksheet_data_other_nsp_ain.shape[0] != 0:
+				# any results?
+				if jacksheet_data_nsp_ain.shape[0] != 0:
 
-						# are these channels present on more than one of: ns2, ns3, or ns4?
-						if len(set(jacksheet_data_other_nsp_ain.FileName.tolist())) != 1:
+					# are these channels present on more than one of: ns2, ns3, or ns4?
+					if len(set(jacksheet_data_nsp_ain.FileName.tolist())) != 1:
 
-							print(sess_path)
-							print(jacksheet_data_other_nsp_ain)
-							print("analog ain channels on backup NSP are spread on multiple nsx files")
-							exit(2)
+						print(sess_path)
+						print(jacksheet_data_nsp_ain)
+						print("analog ain channels are spread on multiple nsx files in this NSP")
+						exit(2)
 
-						print("****** using analog pulse file from other NSP ******* " + sess)
-						current_analog_pulse_file = jacksheet_data_other_nsp_ain.FileName.tolist()[0]
-						current_analog_pulse_nsp = jacksheet_data_other_nsp_ain.NSPsuffix.tolist()[0]
-						current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
+					current_analog_pulse_file = jacksheet_data_nsp_ain.FileName.tolist()[0]
+					current_analog_pulse_nsp = jacksheet_data_nsp_ain.NSPsuffix.tolist()[0]
+					current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
 
-					else:
-						print("****** for session: " + sess + ", no analog pulses on either NSP *******")
+				# found no files, if allowed used the ain's from the other NSP
+				else:
 
-			# now look for nev files
-			jacksheet_data_nsp_din = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("nev")]
+					if use_backup_analog is True:
 
-			# any results?
-			if jacksheet_data_nsp_din.shape[0] != 0:
+						# find non-ns5/6 files that contain an ain channel
+						jacksheet_data_other_nsp_ain = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("ns") & (jacksheet_data_other_nsp["SampFreq"] < 3e4)]
 
-				current_digital_pulse_file = jacksheet_data_nsp_din.FileName.tolist()[0]
-				current_digital_pulse_nsp = jacksheet_data_nsp_din.NSPsuffix.tolist()[0]
+						# any results?
+						if jacksheet_data_other_nsp_ain.shape[0] != 0:
 
-			# check other nsp for nev file
-			else:
+							# are these channels present on more than one of: ns2, ns3, or ns4?
+							if len(set(jacksheet_data_other_nsp_ain.FileName.tolist())) != 1:
 
-				if use_backup_digital is True:
+								print(sess_path)
+								print(jacksheet_data_other_nsp_ain)
+								print("analog ain channels on backup NSP are spread on multiple nsx files")
+								exit(2)
 
-					jacksheet_data_other_nsp_din = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("nev")]
+							print("****** using analog pulse file from other NSP ******* " + sess)
+							current_analog_pulse_file = jacksheet_data_other_nsp_ain.FileName.tolist()[0]
+							current_analog_pulse_nsp = jacksheet_data_other_nsp_ain.NSPsuffix.tolist()[0]
+							current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
 
-					# any results?
-					if jacksheet_data_other_nsp_din.shape[0] != 0:
+						else:
+							print("****** for session: " + sess + ", no analog pulses on either NSP *******")
 
-						print("****** using digital pulse file from other NSP ******* " + sess)
-						current_digital_pulse_file = jacksheet_data_other_nsp_din.FileName.tolist()[0]
-						current_digital_pulse_nsp = jacksheet_data_other_nsp_din.NSPsuffix.tolist()[0]
+				# now look for nev files
+				jacksheet_data_nsp_din = jacksheet_data_nsp[jacksheet_data_nsp["ChanName"].str.contains("ain") & jacksheet_data_nsp["FileName"].str.contains("nev")]
 
-					else:
-						print("****** for session: " + sess + ", no digital pulses on either NSP *******")
+				# any results?
+				if jacksheet_data_nsp_din.shape[0] != 0:
 
-			session_fileset = {}
+					current_digital_pulse_file = jacksheet_data_nsp_din.FileName.tolist()[0]
+					current_digital_pulse_nsp = jacksheet_data_nsp_din.NSPsuffix.tolist()[0]
 
-			session_fileset.update({"date_YMD_HM": datestring_match})
+				# check other nsp for nev file
+				else:
 
-			session_fileset.update({"session_path": sess_path})
-			session_fileset.update({"session_name": sess})
+					if use_backup_digital is True:
 
-			session_info_str = current_nsx_fileExt + "\n" + current_analog_pulse_fileExt + "\n" + nsp_suffix
-			session_fileset.update({"session_info_str": session_info_str})
-			session_fileset.update({"session_jacksheet": "jacksheetBR_complete.csv"})
+						jacksheet_data_other_nsp_din = jacksheet_data_other_nsp[jacksheet_data_other_nsp["ChanName"].str.contains("ain") & jacksheet_data_other_nsp["FileName"].str.contains("nev")]
 
-			session_fileset.update({"analog_physio_src": current_nsx_file})
-			session_fileset.update({"analog_physio_dest": subj + "_" + datestring_match + "_" + nsp_suffix + "." + current_nsx_fileExt})
-			session_fileset.update({"analog_physio_filesize": os.path.getsize(sess_path + "/" + current_nsx_file)})
+						# any results?
+						if jacksheet_data_other_nsp_din.shape[0] != 0:
 
-			if current_analog_pulse_file != "":
+							print("****** using digital pulse file from other NSP ******* " + sess)
+							current_digital_pulse_file = jacksheet_data_other_nsp_din.FileName.tolist()[0]
+							current_digital_pulse_nsp = jacksheet_data_other_nsp_din.NSPsuffix.tolist()[0]
 
-				session_fileset.update({"analog_pulse_src": current_analog_pulse_file})
-				session_fileset.update({"analog_pulse_dest": subj + "_" + datestring_match + "_" + current_analog_pulse_nsp + "." + current_analog_pulse_fileExt})
-				session_fileset.update({"analog_pulse_filesize": os.path.getsize(sess_path + "/" + current_analog_pulse_file)})
+						else:
+							print("****** for session: " + sess + ", no digital pulses on either NSP *******")
 
-			else:
+				session_fileset = {}
 
-				session_fileset.update({"analog_pulse_src": ""})
-				session_fileset.update({"analog_pulse_dest": ""})
-				session_fileset.update({"analog_pulse_filesize": 0})
+				session_fileset.update({"date_YMD_HM": datestring_match})
 
-			if current_digital_pulse_file != "":
+				session_fileset.update({"session_path": sess_path})
+				session_fileset.update({"session_name": sess})
+				session_fileset.update({"nsp_suffix": current_nsp_suffix})
 
-				session_fileset.update({"digital_pulse_src": current_digital_pulse_file})
-				session_fileset.update({"digital_pulse_dest": subj + "_" + datestring_match + "_" + current_digital_pulse_nsp + ".nev"})
-				session_fileset.update({"digital_pulse_filesize": os.path.getsize(sess_path + "/" + current_digital_pulse_file)})
+				session_info_str = current_nsx_fileExt + "\n" + current_analog_pulse_fileExt + "\n" + current_nsp_suffix
+				session_fileset.update({"session_info_str": session_info_str})
+				session_fileset.update({"session_jacksheet": "jacksheetBR_complete.csv"})
 
-			else:
+				session_fileset.update({"analog_physio_src": current_nsx_file})
+				session_fileset.update({"analog_physio_dest": subj + "_" + datestring_match + "_" + current_nsp_suffix + "." + current_nsx_fileExt})
+				session_fileset.update({"analog_physio_filesize": os.path.getsize(sess_path + "/" + current_nsx_file)})
 
-				session_fileset.update({"digital_pulse_src": ""})
-				session_fileset.update({"digital_pulse_dest": ""})
-				session_fileset.update({"digital_pulse_filesize": 0})
+				if current_analog_pulse_file != "":
 
-			session_fileset.update({"id": id_counter})
-			session_fileset.update({"session_concat_string": session_fileset["analog_physio_src"] + session_fileset["digital_pulse_src"] + session_fileset["analog_pulse_src"]})
-			session_fileset.update({"session_filesize": session_fileset["analog_physio_filesize"]})
+					session_fileset.update({"analog_pulse_src": current_analog_pulse_file})
+					session_fileset.update({"analog_pulse_dest": subj + "_" + datestring_match + "_" + current_analog_pulse_nsp + "." + current_analog_pulse_fileExt})
+					session_fileset.update({"analog_pulse_filesize": os.path.getsize(sess_path + "/" + current_analog_pulse_file)})
 
-			recording_filesets.append(session_fileset)
+				else:
+
+					session_fileset.update({"analog_pulse_src": ""})
+					session_fileset.update({"analog_pulse_dest": ""})
+					session_fileset.update({"analog_pulse_filesize": 0})
+
+				if current_digital_pulse_file != "":
+
+					session_fileset.update({"digital_pulse_src": current_digital_pulse_file})
+					session_fileset.update({"digital_pulse_dest": subj + "_" + datestring_match + "_" + current_digital_pulse_nsp + ".nev"})
+					session_fileset.update({"digital_pulse_filesize": os.path.getsize(sess_path + "/" + current_digital_pulse_file)})
+
+				else:
+
+					session_fileset.update({"digital_pulse_src": ""})
+					session_fileset.update({"digital_pulse_dest": ""})
+					session_fileset.update({"digital_pulse_filesize": 0})
+
+				session_fileset.update({"id": id_counter})
+				session_fileset.update({"session_concat_string": session_fileset["analog_physio_src"] + session_fileset["digital_pulse_src"] + session_fileset["analog_pulse_src"]})
+				session_fileset.update({"session_filesize": session_fileset["analog_physio_filesize"]})
+
+				recording_filesets.append(session_fileset)
 
 
 # sort the filesets
@@ -358,6 +369,11 @@ for rec_set1 in input_filesets:
 
 print("num filesets after duplicate removal: " + str(len(input_filesets)))
 print("\n\n")
+
+
+print("list of unique NSPsuffixes found in all sessions checked for this subj:")
+print(set(all_unique_nsp_suffixes))
+print()
 
 ########################################################################################################
 ########################################################################################################
@@ -440,7 +456,7 @@ new_batch = open(input_batch_file, 'w')
 # write timestamp
 new_batch.write("#" + run_timestamp + "\n")
 new_batch.write("#subj_path: " + subj_path + "\n")
-new_batch.write("#nsp_suffix: " + nsp_suffix + "\n")
+new_batch.write("#nsp_suffix: " + nsp_suffix_set + "\n")
 new_batch.write("#raw_dir: " + raw_dir + "\n")
 new_batch.write("#transfer sess count: " + str(transfer_count) + "\n")
 new_batch.write("\n\n")
@@ -473,7 +489,7 @@ for sess in current_upload_list:
 		new_batch.write(transfer_dest_sess_dir + "/" + sess["digital_pulse_dest"])
 		new_batch.write("\n")
 
-	sess_info_filename = subj + "_" + sess["date_YMD_HM"] + "_" + nsp_suffix + "_info.txt"
+	sess_info_filename = subj + "_" + sess["date_YMD_HM"] + "_" + sess["nsp_suffix"] + "_info.txt"
 	sess_info_file = open(sess_info_temp_dir + "/" + sess_info_filename, 'w')
 	sess_info_file.write(sess["session_info_str"])
 	sess_info_file.close()

@@ -1,4 +1,4 @@
-#2019_04_10_13_33_41
+#2019_04_10_13_33_27
 #subj_path: /Volumes/56E/UTAH_E/NIH064
 #nsp_suffix: utah
 #raw_dir: data_raw
