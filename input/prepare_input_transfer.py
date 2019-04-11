@@ -193,7 +193,7 @@ for sess in session_path_ls:
 			jacksheet_data = pd.read_csv(jacksheet_fpath)
 
 			# collect all nsp suffixes used for this patient
-			all_unique_nsp_suffixes += jacksheet_data.NSPsuffix.unique().tolist()
+			all_unique_nsp_suffixes += jacksheet_data.loc[jacksheet_data["MicroDevNum"] >= 1].NSPsuffix.unique().tolist()
 
 			jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == current_nsp_suffix]
 			jacksheet_data_nsp_micro = jacksheet_data_nsp.loc[jacksheet_data_nsp["MicroDevNum"] >= 1]
@@ -237,9 +237,26 @@ for sess in session_path_ls:
 						print(sess_path)
 						print(jacksheet_data_nsp_ain)
 						print("analog ain channels are spread on multiple nsx files in this NSP")
-						exit(2)
 
-					current_analog_pulse_file = jacksheet_data_nsp_ain.FileName.tolist()[0]
+						multiple_ain_fnames = []
+
+						for ain_fname in jacksheet_data_nsp_ain.FileName.tolist():
+							if ain_fname not in multiple_ain_fnames:
+								multiple_ain_fnames.append(ain_fname)
+
+						print("what do you want to do?")
+						for i_ain_fname, ain_fname in enumerate(multiple_ain_fnames):
+							print(str(i_ain_fname) + ") choose " + ain_fname)
+
+						user_resp = input()
+
+						if int(user_resp) >= 0 and int(user_resp) < len(multiple_ain_fnames):
+							current_analog_pulse_file = multiple_ain_fnames[int(user_resp)]
+
+					else:
+
+						current_analog_pulse_file = jacksheet_data_nsp_ain.FileName.tolist()[0]
+
 					current_analog_pulse_nsp = jacksheet_data_nsp_ain.NSPsuffix.tolist()[0]
 					current_analog_pulse_fileExt = current_analog_pulse_file[-3:]
 
@@ -371,7 +388,7 @@ print("num filesets after duplicate removal: " + str(len(input_filesets)))
 print("\n\n")
 
 
-print("list of unique NSPsuffixes found in all sessions checked for this subj:")
+print("list of unique NSPsuffixes with microDevNum > 0 found in all sessions checked for this subj:")
 print(set(all_unique_nsp_suffixes))
 print()
 
