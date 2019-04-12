@@ -480,7 +480,7 @@ new_batch.write("\n\n")
 
 for sess in current_upload_list:
 
-	transfer_dest_sess_dir = biowulf_dest_path + "/" + sess["session_name"]
+	transfer_dest_sess_dir = biowulf_dest_path + "/" + sess["session_name"] + "_" + sess["nsp_suffix"]
 
 	new_batch.write(sess["session_path"] + "/" + sess["analog_physio_src"])
 	new_batch.write(" ")
