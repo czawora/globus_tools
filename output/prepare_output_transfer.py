@@ -3,6 +3,7 @@ import os
 import datetime
 import argparse
 import glob
+import pandas as pd
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -16,45 +17,22 @@ print("*** you SHOULD be running this on biowulf")
 print("*** make sure globus-cli is installed and findable in PATH -- https://docs.globus.org/cli/")
 print("*** use 'globus whoami' to check your current globus login identity | use 'globus login' to login")
 
-
-########################################################################################################
-########################################################################################################
-# make sure environment varibales are in place
-
-globus_ID = open("../globus_ID.csv")
-globus_ID_lines = [l.strip("\n") for l in globus_ID]
-globus_ID.close()
-
-FRNU_GLOBUS_ID = globus_ID_lines[1].split(",")[-1]
-NIH_GLOBUS_ID = globus_ID_lines[2].split(",")[-1]
-
-os.environ["FRNU_GLOBUS"] = FRNU_GLOBUS_ID
-os.environ["NIH_GLOBUS"] = NIH_GLOBUS_ID
-
-print("\n\n")
-
-print("env FRNU_GLOBUS = " + FRNU_GLOBUS_ID)
-print("set FRNU_GLOBUS environment variable to FRNU's Globus endpoint ID specified in ../globus_ID.csv")
-
-print("env NIH_GLOBUS = " + NIH_GLOBUS_ID)
-print("set NIH_GLOBUS environment variable to NIH's Globus endpoint ID specified in ../globus_ID.csv")
-
-print("\n\n")
-
-
-########################################################################################################
-########################################################################################################
-
-
 # arg parse
 parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--skip_sorts', action='store_true')
 parser.add_argument('--skip_lfps', action='store_true')
+parser.add_argument('--dest_72', action='store_true')
+parser.add_argument('--dest_56', action='store_true')
+parser.add_argument('--dest_CZ', action='store_true')
 parser.add_argument('--transfer_dirs', nargs="+")
 parser.add_argument('--sources', nargs="+")
 
 args = parser.parse_args()
+
+dest_72 = args.dest_72
+dest_56 = args.dest_56
+dest_CZ = args.dest_CZ
 
 skip_sorts = args.skip_sorts
 skip_lfps = args.skip_lfps
@@ -70,6 +48,56 @@ if transfer_dirs is None or srcs is None:
 if len(transfer_dirs) != len(srcs):
 	print("provide a transfer directory for every source given")
 	exit(1)
+
+
+if dest_56 is False and dest_72 is False and dest_CZ is False:
+
+	print("specify a destination flag --dest_56, --dest_72, --dest_CZ")
+	exit(1)
+
+elif dest_56 is True and dest_72 is False and dest_CZ is False:
+
+	dest = "FRNU56"
+
+elif dest_56 is False and dest_72 is True and dest_CZ is False:
+
+	dest = "FRNU72"
+
+elif dest_56 is False and dest_72 is False and dest_CZ is True:
+
+	dest = "CZ"
+
+else:
+
+	print("you cannot use multiple destination flags")
+	exit(1)
+
+
+########################################################################################################
+########################################################################################################
+# make sure environment varibales are in place
+
+globus_ID = pd.read_csv("../globus_ID.csv", header=None)
+
+comment_rows_bin = globus_ID.isnull().any(axis=1).tolist()
+not_comment_rows_bin = [not x for x in comment_rows_bin]
+
+# remove comment lines
+globus_ID = globus_ID[not_comment_rows_bin]
+
+# get the NIH globus ID
+NIH_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains("NIH")][1].tolist()[0]
+dest_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains(dest)][1].tolist()[0]
+
+print("\n\n")
+
+print("dest detected as : " + dest)
+print("dest_GLOBUS_ID = " + dest_GLOBUS_ID)
+
+print("\n\n")
+
+########################################################################################################
+########################################################################################################
 
 
 run_timestamp = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -225,9 +253,9 @@ for idx, src in enumerate(srcs):
 
 # now write the tranfer bash command
 new_bash.write("globus transfer ")
-new_bash.write(os.environ["NIH_GLOBUS"])
+new_bash.write(NIH_GLOBUS_ID)
 new_bash.write(" ")
-new_bash.write(os.environ["FRNU_GLOBUS"])
+new_bash.write(dest_GLOBUS_ID)
 new_bash.write(" --no-verify-checksum ")
 new_bash.write(" --batch --label \"")
 new_bash.write(run_timestamp + " transfer-" + str(transfer_count))
