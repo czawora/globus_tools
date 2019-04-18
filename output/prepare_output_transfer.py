@@ -223,6 +223,17 @@ for idx, src in enumerate(srcs):
 				new_batch.write(dest_sess_level + "/stim/stimArtifactInfo.mat")
 				new_batch.write("\n")
 
+			# check for ignore_mes
+			for f in glob.glob(sess + "/lfp/_ignore_me.txt"):
+
+				fname = f.split("/")[-1]
+
+				new_batch.write(sess + "/lfp/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
+
 			for f in glob.glob(sess + "/lfp/outputs/microDev*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
 
 				print(f)
