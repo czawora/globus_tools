@@ -223,7 +223,7 @@ for idx, src in enumerate(srcs):
 				new_batch.write(dest_sess_level + "/stim/stimArtifactInfo.mat")
 				new_batch.write("\n")
 
-			for f in glob.glob(sess + "/lfp/outputs/refset*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
+			for f in glob.glob(sess + "/lfp/outputs/microDev*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
 
 				print(f)
 				fname = f.split("/")[-1]
