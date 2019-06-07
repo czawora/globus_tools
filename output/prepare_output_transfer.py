@@ -156,7 +156,7 @@ for idx, src in enumerate(srcs):
 
 	if skip_sorts is False:
 
-		src_glob = glob.glob(src + "/*/spike/outputs") + glob.glob(src + "/*/spike/_ignore_me.txt")
+		src_glob = glob.glob(src + "/*/spike/outputs") #+ glob.glob(src + "/*/spike/_ignore_me.txt")
 
 		sort_src_sessions = list(set( [ f.split("/spike")[0] for f in src_glob ] ))
 
@@ -167,15 +167,15 @@ for idx, src in enumerate(srcs):
 			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
 			# check for ignore_mes
-			for f in glob.glob(sess + "/spike/_ignore_me.txt"):
-
-				fname = f.split("/")[-1]
-
-				new_batch.write(sess + "/spike/" + fname)
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/" + fname)
-				new_batch.write("\n")
-				transfer_count += 1
+			# for f in glob.glob(sess + "/spike/_ignore_me.txt"):
+			#
+			# 	fname = f.split("/")[-1]
+			#
+			# 	new_batch.write(sess + "/spike/" + fname)
+			# 	new_batch.write(" ")
+			# 	new_batch.write(dest_sess_level + "/" + fname)
+			# 	new_batch.write("\n")
+			# 	transfer_count += 1
 
 			for f in glob.glob(sess + "/spike/outputs/*sortSummary.csv") + glob.glob(sess + "/spike/outputs/*spikeWaveform.mat") + glob.glob(sess + "/spike/outputs/*sortFigs"):
 
@@ -206,7 +206,7 @@ for idx, src in enumerate(srcs):
 	if skip_lfps is False:
 
 		# look for lfp results
-		src_glob = glob.glob(src + "/*/lfp/outputs") + glob.glob(src + "/*/lfp/_ignore_me.txt")
+		src_glob = glob.glob(src + "/*/lfp/outputs") #+ glob.glob(src + "/*/lfp/_ignore_me.txt")
 
 		lfp_src_sessions = list(set( [ f.split("/lfp")[0] for f in src_glob ] ))
 
@@ -224,15 +224,15 @@ for idx, src in enumerate(srcs):
 				new_batch.write("\n")
 
 			# check for ignore_mes
-			for f in glob.glob(sess + "/lfp/_ignore_me.txt"):
-
-				fname = f.split("/")[-1]
-
-				new_batch.write(sess + "/lfp/" + fname)
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/" + fname)
-				new_batch.write("\n")
-				transfer_count += 1
+			# for f in glob.glob(sess + "/lfp/_ignore_me.txt"):
+			#
+			# 	fname = f.split("/")[-1]
+			#
+			# 	new_batch.write(sess + "/lfp/" + fname)
+			# 	new_batch.write(" ")
+			# 	new_batch.write(dest_sess_level + "/" + fname)
+			# 	new_batch.write("\n")
+			# 	transfer_count += 1
 
 			for f in glob.glob(sess + "/lfp/outputs/microDev*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
 
