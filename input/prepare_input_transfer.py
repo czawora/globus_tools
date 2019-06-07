@@ -51,6 +51,13 @@ use_backup_digital = args.skip_backup_digital
 
 dry_run = args.dry_run
 
+# convert min_range_cutoff_microvolt to millivolt
+min_range_cutoff_ungained = 10
+min_range_cutoff_millivolt = min_range_cutoff_ungained * 0.25 * (1/1000)
+
+# set time cutoff
+min_duration_minutes = 5
+
 session_path = subj_path + "/" + raw_dir
 
 subj = subj_path.split("/")[-1]
@@ -196,7 +203,7 @@ for sess in session_path_ls:
 			all_unique_nsp_suffixes += jacksheet_data.loc[jacksheet_data["MicroDevNum"] >= 1].NSPsuffix.unique().tolist()
 
 			jacksheet_data_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] == current_nsp_suffix]
-			jacksheet_data_nsp_micro = jacksheet_data_nsp.loc[(jacksheet_data_nsp["MicroDevNum"] >= 1) & (jacksheet_data_nsp["SampFreq"] >= 3e4)]
+			jacksheet_data_nsp_micro = jacksheet_data_nsp.loc[(jacksheet_data_nsp["MicroDevNum"] >= 1) & (jacksheet_data_nsp["SampFreq"] >= 3e4) & (jacksheet_data_nsp["RangeMilliV"] >= min_range_cutoff_millivolt) & (jacksheet_data_nsp["DurationMin"] >= min_duration_minutes)]
 
 			jacksheet_data_other_nsp = jacksheet_data.loc[jacksheet_data["NSPsuffix"] != current_nsp_suffix]
 

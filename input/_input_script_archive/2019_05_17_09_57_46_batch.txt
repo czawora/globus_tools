@@ -1,0 +1,7 @@
+#2019_05_17_09_57_46
+#subj_path: /Volumes/72A/UTAH_A/NIH037
+#nsp_suffix: utah
+#raw_dir: data_raw
+#transfer sess count: 0
+
+

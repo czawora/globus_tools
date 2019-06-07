@@ -1,0 +1,7 @@
+#2019_05_23_17_09_34
+#subj_path: /Volumes/72C/UTAH_C/NIH054
+#nsp_suffix: gre
+#raw_dir: data_raw
+#transfer sess count: 0
+
+
