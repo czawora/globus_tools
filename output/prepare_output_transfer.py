@@ -268,13 +268,16 @@ for idx, src in enumerate(srcs):
 
 		# look for lfp results
 		src_glob = glob.glob(src + "/*/psd")
+		psd_src_sessions = list(set( [ f.split("/psd")[0] for f in src_glob ] ))
 
-		for sess in src_glob:
+		for sess in psd_src_sessions:
+
+			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
 			print(sess)
 			new_batch.write(" --recursive ")
 
-			new_batch.write(sess)
+			new_batch.write(sess + "/psd")
 			new_batch.write(" ")
 			new_batch.write(dest_sess_level + "/psd")
 			new_batch.write("\n")
