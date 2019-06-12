@@ -22,6 +22,7 @@ parser = argparse.ArgumentParser(description='')
 
 parser.add_argument('--skip_sorts', action='store_true')
 parser.add_argument('--skip_lfps', action='store_true')
+parser.add_argument('--get_psd', action='store_true')
 parser.add_argument('--dest_72', action='store_true')
 parser.add_argument('--dest_56', action='store_true')
 parser.add_argument('--dest_CZ', action='store_true')
@@ -36,6 +37,8 @@ dest_CZ = args.dest_CZ
 
 skip_sorts = args.skip_sorts
 skip_lfps = args.skip_lfps
+get_psd = args.get_psd
+
 transfer_dirs = args.transfer_dirs
 srcs = args.sources
 
@@ -260,6 +263,22 @@ for idx, src in enumerate(srcs):
 				new_batch.write(dest_sess_level + "/raw/" + fname)
 				new_batch.write("\n")
 				transfer_count += 1
+
+	if get_psd is True:
+
+		# look for lfp results
+		src_glob = glob.glob(src + "/*/psd")
+
+		for sess in src_glob:
+
+			print(sess)
+			new_batch.write(" --recursive ")
+
+			new_batch.write(sess)
+			new_batch.write(" ")
+			new_batch.write(dest_sess_level + "/psd")
+			new_batch.write("\n")
+			transfer_count += 1
 
 
 # now write the tranfer bash command
