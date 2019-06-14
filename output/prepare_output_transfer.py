@@ -266,25 +266,7 @@ for idx, src in enumerate(srcs):
 
 			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
-			stimArtifactInfo_glob = glob.glob(sess + "/stimArtifactInfo.mat")
-			if stimArtifactInfo_glob != []:
-				new_batch.write(sess + "/stimArtifactInfo.mat")
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/stim/stimArtifactInfo.mat")
-				new_batch.write("\n")
-
-			# check for ignore_mes
-			# for f in glob.glob(sess + "/lfp/_ignore_me.txt"):
-			#
-			# 	fname = f.split("/")[-1]
-			#
-			# 	new_batch.write(sess + "/lfp/" + fname)
-			# 	new_batch.write(" ")
-			# 	new_batch.write(dest_sess_level + "/" + fname)
-			# 	new_batch.write("\n")
-			# 	transfer_count += 1
-
-			for f in glob.glob(sess + "/" + microDev_path + "/microDev*") + glob.glob(sess + "/" + variance_path + "/variance.csv"):
+			for f in glob.glob(sess + "/" + microDev_path + "/microDev*"):
 
 				print(f)
 				fname = f.split("/")[-1]
@@ -292,24 +274,40 @@ for idx, src in enumerate(srcs):
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
-				new_batch.write(sess + "/" + variance_path + "/" + fname)
+				new_batch.write(sess + "/" + microDev_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/cleaning/" + fname)
 				new_batch.write("\n")
 				transfer_count += 1
 
-			for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
+			if figs_only is False:
 
-				fname = f.split("/")[-1]
+				for f in glob.glob(sess + "/" + variance_path + "/variance.csv"):
 
-				if os.path.isdir(f):
-					new_batch.write(" --recursive ")
+					print(f)
+					fname = f.split("/")[-1]
 
-				new_batch.write(sess + "/" + reref_path + "/" + fname)
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/raw/" + fname)
-				new_batch.write("\n")
-				transfer_count += 1
+					if os.path.isdir(f):
+						new_batch.write(" --recursive ")
+
+					new_batch.write(sess + "/" + variance_path + "/" + fname)
+					new_batch.write(" ")
+					new_batch.write(dest_sess_level + "/cleaning/" + fname)
+					new_batch.write("\n")
+					transfer_count += 1
+
+				for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
+
+					fname = f.split("/")[-1]
+
+					if os.path.isdir(f):
+						new_batch.write(" --recursive ")
+
+					new_batch.write(sess + "/" + reref_path + "/" + fname)
+					new_batch.write(" ")
+					new_batch.write(dest_sess_level + "/raw/" + fname)
+					new_batch.write("\n")
+					transfer_count += 1
 
 	if get_psd is True:
 
