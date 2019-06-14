@@ -23,6 +23,8 @@ parser = argparse.ArgumentParser(description='')
 parser.add_argument('--skip_sorts', action='store_true')
 parser.add_argument('--skip_lfps', action='store_true')
 parser.add_argument('--get_psd', action='store_true')
+parser.add_argument('--figs_only', action='store_true')
+parser.add_argument('--from_complete', action='store_true')
 parser.add_argument('--dest_72', action='store_true')
 parser.add_argument('--dest_56', action='store_true')
 parser.add_argument('--dest_CZ', action='store_true')
@@ -38,6 +40,8 @@ dest_CZ = args.dest_CZ
 skip_sorts = args.skip_sorts
 skip_lfps = args.skip_lfps
 get_psd = args.get_psd
+figs_only = args.figs_only
+from_complete = args.from_complete
 
 transfer_dirs = args.transfer_dirs
 srcs = args.sources
@@ -74,6 +78,34 @@ else:
 
 	print("you cannot use multiple destination flags")
 	exit(1)
+
+spikes_src_glob_path = "spike/outputs"
+lfp_src_glob_path = "lfp/outputs"
+
+sortFigs_path = "spike/outputs"
+spikeInfo_path = "spike/outputs"
+spikeWaveform_path = "spike/outputs"
+sortSummary_path = "spike/outputs"
+
+microDev_path = "lfp/outputs"
+variance_path = "lfp/outputs"
+processed_path = "lfp/outputs"
+reref_path = "lfp/outputs"
+
+if from_complete is True:
+
+	spikes_src_glob_path = "raw"
+	lfp_src_glob_path = "raw"
+
+	sortFigs_path = "sorting"
+	spikeInfo_path = "raw"
+	spikeWaveform_path = "sorting"
+	sortSummary_path = "sorting"
+
+	microDev_path = "cleaning"
+	variance_path = "cleaning"
+	processed_path = "raw"
+	reref_path = "raw"
 
 
 ########################################################################################################
@@ -159,9 +191,9 @@ for idx, src in enumerate(srcs):
 
 	if skip_sorts is False:
 
-		src_glob = glob.glob(src + "/*/spike/outputs") #+ glob.glob(src + "/*/spike/_ignore_me.txt")
+		src_glob = glob.glob(src + "/*/" + spikes_src_glob_path)
 
-		sort_src_sessions = list(set( [ f.split("/spike")[0] for f in src_glob ] ))
+		sort_src_sessions = list(set( [ f.split("/" + spikes_src_glob_path)[0] for f in src_glob ] ))
 
 		for sess in sort_src_sessions:
 
@@ -180,38 +212,53 @@ for idx, src in enumerate(srcs):
 			# 	new_batch.write("\n")
 			# 	transfer_count += 1
 
-			for f in glob.glob(sess + "/spike/outputs/*sortSummary.csv") + glob.glob(sess + "/spike/outputs/*spikeWaveform.mat") + glob.glob(sess + "/spike/outputs/*sortFigs"):
+			for f in glob.glob(sess + "/" + sortFigs_path + "/*sortFigs"):
 
 				fname = f.split("/")[-1]
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
-				new_batch.write(sess + "/spike/outputs/" + fname)
+				new_batch.write(sess + "/" + sortFigs_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/sorting/" + fname)
 				new_batch.write("\n")
 				transfer_count += 1
 
-			for f in glob.glob(sess + "/spike/outputs/*spikeInfo.mat"):
+			if figs_only is False:
 
-				fname = f.split("/")[-1]
+				for f in glob.glob(sess + "/" + sortSummary_path + "/*sortSummary.csv") + glob.glob(sess + "/" + spikeWaveform_path + "/*spikeWaveform.mat"):
 
-				if os.path.isdir(f):
-					new_batch.write(" --recursive ")
+					fname = f.split("/")[-1]
 
-				new_batch.write(sess + "/spike/outputs/" + fname)
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/raw/" + fname)
-				new_batch.write("\n")
-				transfer_count += 1
+					if os.path.isdir(f):
+						new_batch.write(" --recursive ")
+
+					new_batch.write(sess + "/" + sortSummary_path + "" + fname)
+					new_batch.write(" ")
+					new_batch.write(dest_sess_level + "/sorting/" + fname)
+					new_batch.write("\n")
+					transfer_count += 1
+
+				for f in glob.glob(sess + "/" + spikeInfo_path + "/*spikeInfo.mat"):
+
+					fname = f.split("/")[-1]
+
+					if os.path.isdir(f):
+						new_batch.write(" --recursive ")
+
+					new_batch.write(sess + "/" + spikeInfo_path + "/" + fname)
+					new_batch.write(" ")
+					new_batch.write(dest_sess_level + "/raw/" + fname)
+					new_batch.write("\n")
+					transfer_count += 1
 
 	if skip_lfps is False:
 
 		# look for lfp results
-		src_glob = glob.glob(src + "/*/lfp/outputs") #+ glob.glob(src + "/*/lfp/_ignore_me.txt")
+		src_glob = glob.glob(src + "/*/" + lfp_src_glob_path) #+ glob.glob(src + "/*/lfp/_ignore_me.txt")
 
-		lfp_src_sessions = list(set( [ f.split("/lfp")[0] for f in src_glob ] ))
+		lfp_src_sessions = list(set( [ f.split("/" + lfp_src_glob_path)[0] for f in src_glob ] ))
 
 		for sess in lfp_src_sessions:
 
@@ -237,7 +284,7 @@ for idx, src in enumerate(srcs):
 			# 	new_batch.write("\n")
 			# 	transfer_count += 1
 
-			for f in glob.glob(sess + "/lfp/outputs/microDev*") + glob.glob(sess + "/lfp/outputs/variance.csv"):
+			for f in glob.glob(sess + "/" + microDev_path + "/microDev*") + glob.glob(sess + "/" + variance_path + "/variance.csv"):
 
 				print(f)
 				fname = f.split("/")[-1]
@@ -245,20 +292,20 @@ for idx, src in enumerate(srcs):
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
-				new_batch.write(sess + "/lfp/outputs/" + fname)
+				new_batch.write(sess + "/" + variance_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/cleaning/" + fname)
 				new_batch.write("\n")
 				transfer_count += 1
 
-			for f in glob.glob(sess + "/lfp/outputs/*processed.mat") + glob.glob(sess + "/lfp/outputs/*noreref.mat"):
+			for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
 
 				fname = f.split("/")[-1]
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
-				new_batch.write(sess + "/lfp/outputs/" + fname)
+				new_batch.write(sess + "/" + reref_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/raw/" + fname)
 				new_batch.write("\n")
