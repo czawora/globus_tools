@@ -225,16 +225,29 @@ for idx, src in enumerate(srcs):
 				new_batch.write("\n")
 				transfer_count += 1
 
+			for f in glob.glob(sess + "/" + sortSummary_path + "/*sortSummary.csv"):
+
+				fname = f.split("/")[-1]
+
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
+
+				new_batch.write(sess + "/" + sortSummary_path + "" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/sorting/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
+
 			if figs_only is False:
 
-				for f in glob.glob(sess + "/" + sortSummary_path + "/*sortSummary.csv") + glob.glob(sess + "/" + spikeWaveform_path + "/*spikeWaveform.mat"):
+				for f in glob.glob(sess + "/" + spikeWaveform_path + "/*spikeWaveform.mat"):
 
 					fname = f.split("/")[-1]
 
 					if os.path.isdir(f):
 						new_batch.write(" --recursive ")
 
-					new_batch.write(sess + "/" + sortSummary_path + "" + fname)
+					new_batch.write(sess + "/" + spikeWaveform_path + "" + fname)
 					new_batch.write(" ")
 					new_batch.write(dest_sess_level + "/sorting/" + fname)
 					new_batch.write("\n")
@@ -266,7 +279,7 @@ for idx, src in enumerate(srcs):
 
 			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
 
-			for f in glob.glob(sess + "/" + microDev_path + "/microDev*"):
+			for f in glob.glob(sess + "/" + microDev_path + "/microDev*") + glob.glob(sess + "/" + variance_path + "/variance.csv"):
 
 				print(f)
 				fname = f.split("/")[-1]
@@ -281,20 +294,6 @@ for idx, src in enumerate(srcs):
 				transfer_count += 1
 
 			if figs_only is False:
-
-				for f in glob.glob(sess + "/" + variance_path + "/variance.csv"):
-
-					print(f)
-					fname = f.split("/")[-1]
-
-					if os.path.isdir(f):
-						new_batch.write(" --recursive ")
-
-					new_batch.write(sess + "/" + variance_path + "/" + fname)
-					new_batch.write(" ")
-					new_batch.write(dest_sess_level + "/cleaning/" + fname)
-					new_batch.write("\n")
-					transfer_count += 1
 
 				for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
 
