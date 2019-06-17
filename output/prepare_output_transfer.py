@@ -247,7 +247,7 @@ for idx, src in enumerate(srcs):
 					if os.path.isdir(f):
 						new_batch.write(" --recursive ")
 
-					new_batch.write(sess + "/" + spikeWaveform_path + "" + fname)
+					new_batch.write(sess + "/" + spikeWaveform_path + "/" + fname)
 					new_batch.write(" ")
 					new_batch.write(dest_sess_level + "/sorting/" + fname)
 					new_batch.write("\n")
