@@ -238,6 +238,19 @@ for idx, src in enumerate(srcs):
 				new_batch.write("\n")
 				transfer_count += 1
 
+			for f in glob.glob(sess + "/" + spikeInfo_path + "/*spikeInfo.mat"):
+
+				fname = f.split("/")[-1]
+
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
+
+				new_batch.write(sess + "/" + spikeInfo_path + "/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/raw/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
+
 			if figs_only is False:
 
 				for f in glob.glob(sess + "/" + spikeWaveform_path + "/*spikeWaveform.mat"):
@@ -250,19 +263,6 @@ for idx, src in enumerate(srcs):
 					new_batch.write(sess + "/" + spikeWaveform_path + "/" + fname)
 					new_batch.write(" ")
 					new_batch.write(dest_sess_level + "/sorting/" + fname)
-					new_batch.write("\n")
-					transfer_count += 1
-
-				for f in glob.glob(sess + "/" + spikeInfo_path + "/*spikeInfo.mat"):
-
-					fname = f.split("/")[-1]
-
-					if os.path.isdir(f):
-						new_batch.write(" --recursive ")
-
-					new_batch.write(sess + "/" + spikeInfo_path + "/" + fname)
-					new_batch.write(" ")
-					new_batch.write(dest_sess_level + "/raw/" + fname)
 					new_batch.write("\n")
 					transfer_count += 1
 
