@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-globus transfer bf6ee0da-8965-11e9-b807-0a37f382de32 e2620047-6d04-11e5-ba46-22000b92c6ec --no-verify-checksum  --sync-level size  --batch --label "2019_06_12_14_30_56 transfer-660sess" < input_batch.txt
+globus transfer 94a7d578-944b-11e9-bf5b-0e4a062367b8 e2620047-6d04-11e5-ba46-22000b92c6ec --no-verify-checksum  --sync-level size  --batch --label "2019_06_21_18_46_25 transfer-171sess" < input_batch.txt

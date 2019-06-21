@@ -1,4 +1,4 @@
-#2019_06_21_18_46_25
+#2019_06_21_17_20_08
 #subj_path: /Volumes/56C/UTAH_C/NIH064
 #nsp_suffix: utah+INST0
 #raw_dir: data_raw
