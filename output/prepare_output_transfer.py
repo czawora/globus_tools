@@ -371,6 +371,8 @@ for idx, src in enumerate(srcs):
 			transfer_count += 1
 
 
+print("transfer size: " + transfer_size/1e9 + "Gb")
+
 # now write the tranfer bash command
 new_bash.write("globus transfer ")
 new_bash.write(NIH_GLOBUS_ID)
