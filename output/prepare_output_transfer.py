@@ -181,6 +181,7 @@ new_batch = open(output_batch_file, 'w')
 new_batch.write("#" + run_timestamp + "\n\n")
 
 transfer_count = 0
+transfer_size = 0
 
 # add transfers
 for idx, src in enumerate(srcs):
@@ -240,6 +241,7 @@ for idx, src in enumerate(srcs):
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
+				transfer_size += os.path.getsize(sess + "/" + sortFigs_path + "/" + fname)
 				new_batch.write(sess + "/" + sortFigs_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/sorting/" + fname)
@@ -253,6 +255,8 @@ for idx, src in enumerate(srcs):
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
+				transfer_size += os.path.getsize(sess + "/" + sortSummary_path + "/" + fname)
+
 				new_batch.write(sess + "/" + sortSummary_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/sorting/" + fname)
@@ -265,6 +269,8 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
+
+				transfer_size += os.path.getsize(sess + "/" + spikeInfo_path + "/" + fname)
 
 				new_batch.write(sess + "/" + spikeInfo_path + "/" + fname)
 				new_batch.write(" ")
@@ -280,6 +286,8 @@ for idx, src in enumerate(srcs):
 
 					if os.path.isdir(f):
 						new_batch.write(" --recursive ")
+
+					transfer_size += os.path.getsize(sess + "/" + spikeWaveform_path + "/" + fname)
 
 					new_batch.write(sess + "/" + spikeWaveform_path + "/" + fname)
 					new_batch.write(" ")
@@ -318,26 +326,30 @@ for idx, src in enumerate(srcs):
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
 
+				transfer_size += os.path.getsize(sess + "/" + microDev_path + "/" + fname)
+
 				new_batch.write(sess + "/" + microDev_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/cleaning/" + fname)
 				new_batch.write("\n")
 				transfer_count += 1
 
-			if figs_only is False:
+			#if figs_only is False:
 
-				for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
+			for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
 
-					fname = f.split("/")[-1]
+				fname = f.split("/")[-1]
 
-					if os.path.isdir(f):
-						new_batch.write(" --recursive ")
+				if os.path.isdir(f):
+					new_batch.write(" --recursive ")
 
-					new_batch.write(sess + "/" + reref_path + "/" + fname)
-					new_batch.write(" ")
-					new_batch.write(dest_sess_level + "/raw/" + fname)
-					new_batch.write("\n")
-					transfer_count += 1
+				transfer_size += os.path.getsize(sess + "/" + processed_path + "/" + fname)
+
+				new_batch.write(sess + "/" + reref_path + "/" + fname)
+				new_batch.write(" ")
+				new_batch.write(dest_sess_level + "/raw/" + fname)
+				new_batch.write("\n")
+				transfer_count += 1
 
 	if get_psd is True:
 
