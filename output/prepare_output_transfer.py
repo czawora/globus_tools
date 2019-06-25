@@ -30,6 +30,7 @@ parser.add_argument('--dest_56', action='store_true')
 parser.add_argument('--dest_CZ', action='store_true')
 parser.add_argument('--transfer_dirs', nargs="+")
 parser.add_argument('--sources', nargs="+")
+parser.add_argument('--sesslist')
 
 args = parser.parse_args()
 
@@ -45,6 +46,7 @@ from_complete = args.from_complete
 
 transfer_dirs = args.transfer_dirs
 srcs = args.sources
+sesslist = args.sesslist
 
 if transfer_dirs is None or srcs is None:
 
@@ -78,6 +80,15 @@ else:
 
 	print("you cannot use multiple destination flags")
 	exit(1)
+
+if sesslist != "":
+	use_sesslist = True
+	sesslist_fid = open(sesslist)
+	sesslist_contents = [l.strip("\n") for l in sesslist_fid]
+	print(sesslist_contents)
+	sesslist_fid.close()
+else:
+	use_sesslist = False
 
 spikes_src_glob_path = "spike/outputs"
 lfp_src_glob_path = "lfp/outputs"
@@ -197,6 +208,16 @@ for idx, src in enumerate(srcs):
 
 		for sess in sort_src_sessions:
 
+			if use_sesslist is True:
+
+				in_sesslist = False
+				for listItem in sesslist_contents:
+					if listItem in sess:
+						in_sesslist = True
+
+				if in_sesslist is False:
+					continue
+
 			print(sess)
 
 			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
@@ -274,6 +295,16 @@ for idx, src in enumerate(srcs):
 		lfp_src_sessions = list(set( [ f.split("/" + lfp_src_glob_path)[0] for f in src_glob ] ))
 
 		for sess in lfp_src_sessions:
+
+			if use_sesslist is True:
+
+				in_sesslist = False
+				for listItem in sesslist_contents:
+					if listItem in sess:
+						in_sesslist = True
+
+				if in_sesslist is False:
+					continue
 
 			print(sess)
 
