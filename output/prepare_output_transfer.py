@@ -81,7 +81,7 @@ else:
 	print("you cannot use multiple destination flags")
 	exit(1)
 
-if sesslist != "":
+if sesslist is not None and sesslist != "":
 	use_sesslist = True
 	sesslist_fid = open(sesslist)
 	sesslist_contents = [l.strip("\n") for l in sesslist_fid]
