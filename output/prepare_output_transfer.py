@@ -350,23 +350,23 @@ for idx, src in enumerate(srcs):
 				new_batch.write("\n")
 				transfer_count += 1
 
-			#if figs_only is False:
+			if figs_only is False:
 
-			for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
+				for f in glob.glob(sess + "/" + processed_path + "/*processed.mat") + glob.glob(sess + "/" + reref_path + "/*noreref.mat"):
 
-				fname = f.split("/")[-1]
+					fname = f.split("/")[-1]
 
-				if os.path.isdir(f):
-					new_batch.write(" --recursive ")
-					transfer_size += get_size(sess + "/" + processed_path + "/" + fname)
-				else:
-					transfer_size += os.path.getsize(sess + "/" + processed_path + "/" + fname)
+					if os.path.isdir(f):
+						new_batch.write(" --recursive ")
+						transfer_size += get_size(sess + "/" + processed_path + "/" + fname)
+					else:
+						transfer_size += os.path.getsize(sess + "/" + processed_path + "/" + fname)
 
-				new_batch.write(sess + "/" + reref_path + "/" + fname)
-				new_batch.write(" ")
-				new_batch.write(dest_sess_level + "/raw/" + fname)
-				new_batch.write("\n")
-				transfer_count += 1
+					new_batch.write(sess + "/" + reref_path + "/" + fname)
+					new_batch.write(" ")
+					new_batch.write(dest_sess_level + "/raw/" + fname)
+					new_batch.write("\n")
+					transfer_count += 1
 
 	if get_psd is True:
 
