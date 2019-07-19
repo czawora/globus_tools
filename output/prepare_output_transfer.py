@@ -5,6 +5,16 @@ import argparse
 import glob
 import pandas as pd
 
+
+def get_size(start_path='.'):
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(start_path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            total_size += os.path.getsize(fp)
+    return total_size
+
+
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
@@ -240,8 +250,10 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
+					transfer_size += get_size(sess + "/" + sortFigs_path + "/" + fname)
+				else:
+					transfer_size += os.path.getsize(sess + "/" + sortFigs_path + "/" + fname)
 
-				transfer_size += os.path.getsize(sess + "/" + sortFigs_path + "/" + fname)
 				new_batch.write(sess + "/" + sortFigs_path + "/" + fname)
 				new_batch.write(" ")
 				new_batch.write(dest_sess_level + "/sorting/" + fname)
@@ -254,8 +266,9 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
-
-				transfer_size += os.path.getsize(sess + "/" + sortSummary_path + "/" + fname)
+					transfer_size += get_size(sess + "/" + sortSummary_path + "/" + fname)
+				else:
+					transfer_size += os.path.getsize(sess + "/" + sortSummary_path + "/" + fname)
 
 				new_batch.write(sess + "/" + sortSummary_path + "/" + fname)
 				new_batch.write(" ")
@@ -269,8 +282,9 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
-
-				transfer_size += os.path.getsize(sess + "/" + spikeInfo_path + "/" + fname)
+					transfer_size += get_size(sess + "/" + spikeInfo_path + "/" + fname)
+				else:
+					transfer_size += os.path.getsize(sess + "/" + spikeInfo_path + "/" + fname)
 
 				new_batch.write(sess + "/" + spikeInfo_path + "/" + fname)
 				new_batch.write(" ")
@@ -286,8 +300,9 @@ for idx, src in enumerate(srcs):
 
 					if os.path.isdir(f):
 						new_batch.write(" --recursive ")
-
-					transfer_size += os.path.getsize(sess + "/" + spikeWaveform_path + "/" + fname)
+						transfer_size += get_size(sess + "/" + spikeWaveform_path + "/" + fname)
+					else:
+						transfer_size += os.path.getsize(sess + "/" + spikeWaveform_path + "/" + fname)
 
 					new_batch.write(sess + "/" + spikeWaveform_path + "/" + fname)
 					new_batch.write(" ")
@@ -325,8 +340,9 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
-
-				transfer_size += os.path.getsize(sess + "/" + microDev_path + "/" + fname)
+					transfer_size += get_size(sess + "/" + microDev_path + "/" + fname)
+				else:
+					transfer_size += os.path.getsize(sess + "/" + microDev_path + "/" + fname)
 
 				new_batch.write(sess + "/" + microDev_path + "/" + fname)
 				new_batch.write(" ")
@@ -342,8 +358,9 @@ for idx, src in enumerate(srcs):
 
 				if os.path.isdir(f):
 					new_batch.write(" --recursive ")
-
-				transfer_size += os.path.getsize(sess + "/" + processed_path + "/" + fname)
+					transfer_size += get_size(sess + "/" + processed_path + "/" + fname)
+				else:
+					transfer_size += os.path.getsize(sess + "/" + processed_path + "/" + fname)
 
 				new_batch.write(sess + "/" + reref_path + "/" + fname)
 				new_batch.write(" ")
@@ -360,6 +377,8 @@ for idx, src in enumerate(srcs):
 		for sess in psd_src_sessions:
 
 			dest_sess_level = current_transfer_dir + "/" + sess.split("/")[-1]
+
+			transfer_size += get_size(sess + "/psd")
 
 			print(sess)
 			new_batch.write(" --recursive ")
