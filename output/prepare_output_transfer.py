@@ -6,6 +6,7 @@ import glob
 import pandas as pd
 
 
+# get size of an entire directory tree
 def get_size(start_path='.'):
     total_size = 0
     for dirpath, dirnames, filenames in os.walk(start_path):
@@ -38,6 +39,7 @@ parser.add_argument('--from_complete', action='store_true')
 parser.add_argument('--dest_72', action='store_true')
 parser.add_argument('--dest_56', action='store_true')
 parser.add_argument('--dest_CZ', action='store_true')
+parser.add_argument("--no_sync", action='store_true')
 parser.add_argument('--transfer_dirs', nargs="+")
 parser.add_argument('--sources', nargs="+")
 parser.add_argument('--sesslist')
@@ -47,6 +49,8 @@ args = parser.parse_args()
 dest_72 = args.dest_72
 dest_56 = args.dest_56
 dest_CZ = args.dest_CZ
+
+sync_transfer = not args.no_sync
 
 skip_sorts = args.skip_sorts
 skip_lfps = args.skip_lfps
@@ -398,6 +402,8 @@ new_bash.write(NIH_GLOBUS_ID)
 new_bash.write(" ")
 new_bash.write(dest_GLOBUS_ID)
 new_bash.write(" --no-verify-checksum ")
+if sync_transfer is True:
+	new_bash.write(" --sync-level size ")
 new_bash.write(" --batch --label \"")
 new_bash.write(run_timestamp + " transfer-" + str(transfer_count))
 new_bash.write("\" < " + output_batch_file)
