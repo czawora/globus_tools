@@ -28,7 +28,7 @@ _BEFORE STARTING_:
 
 Whereas sessions stored on FRNU56 keep both NSP filesets together, files are copied into separate session-by-NPS folders on biowulf. The filename column in jacksheetBR_complete specifies the ns5/6 file that is copied, along with any ns3 or nev files matching the NSP.
 
-NOTE: If a session does not contain ain pulse channels or an nev file, the `--skip_backup_analog` and `--skip_backup_digital` options will dictate whether or not the respective pulse files from the partner NSP are used.
+NOTE: If an NSP does not contain ain pulse channels or have a matching nev file, the `--skip_backup_analog` and `--skip_backup_digital` options will dictate whether or not the respective pulse files from the partner NSP are used.
 
 -----
 ### Transferring from biowulf
