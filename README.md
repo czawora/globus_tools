@@ -18,7 +18,7 @@ _BEFORE STARTING_:
 ###### Steps for executing input transfer
 
   * clone this repository
-  * run `python input/prepare_input_transfer.py <source_path_to_session_folders> <destination_path> <NSP_name>`
+  * run `python prepare_input_transfer.py <source_path_to_session_folders> <destination_path> <NSP_name>`
     * ex: `python prepare_input_transfer.py /Volumes/56A/UTAH_A/NIH029 /data/zaworaca/subjs/NIH029 utah_m`
 	* `<NSP_name>` references the NPS column in jacksheetBR_complete.csv. Two NSPs can be transferred at the same time by passing `NSP_name1+NSP_name2`. More detail is provided about `NSP_name` below.
   * check `input_batch.txt` to make sure things look right, and then run `input_transfer.sh`.
