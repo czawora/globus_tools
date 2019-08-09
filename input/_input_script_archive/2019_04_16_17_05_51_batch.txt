@@ -1,0 +1,11 @@
+#2019_04_16_17_05_51
+#subj_path: /Volumes/56B/UTAH_B/NIH039
+#nsp_suffix: utah_u
+#raw_dir: data_raw
+#transfer sess count: 1
+
+
+/Volumes/56B/UTAH_B/NIH039/data_raw/160311_1620_beh/160311_1620_utah_u_beh.ns4 /data/FRNU/CZ/test/NIH039/160311_1620_beh_utah_u/NIH039_160311_1620_utah_u.ns4
+/Volumes/56B/UTAH_B/NIH039/data_raw/160311_1620_beh/jacksheetBR_complete.csv /data/FRNU/CZ/test/NIH039/160311_1620_beh_utah_u/jacksheetBR_complete.csv
+/Volumes/56B/UTAH_B/NIH039/data_raw/160311_1620_beh/160311_1620_utah_u_beh.nev /data/FRNU/CZ/test/NIH039/160311_1620_beh_utah_u/NIH039_160311_1620_utah_u.nev
+/Volumes/56A/globus/temp/NIH039_160311_1620_utah_u_info.txt /data/FRNU/CZ/test/NIH039/160311_1620_beh_utah_u/NIH039_160311_1620_utah_u_info.txt

@@ -1,0 +1,7 @@
+#2019_05_24_15_00_13
+#subj_path: /Volumes/72B/UTAH_B/NIH047
+#nsp_suffix: u
+#raw_dir: data_raw
+#transfer sess count: 0
+
+
