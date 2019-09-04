@@ -128,7 +128,7 @@ globus_ID = globus_ID[not_comment_rows_bin]
 
 # get the NIH globus ID
 NIH_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains("NIH")][1].tolist()[0]
-FRNU_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0].str.contains(FRNU_src)][1].tolist()[0]
+FRNU_GLOBUS_ID = globus_ID[globus_ID.iloc[:, 0] == FRNU_src][1].tolist()[0]
 
 os.environ["FRNU_GLOBUS"] = FRNU_GLOBUS_ID
 os.environ["NIH_GLOBUS"] = NIH_GLOBUS_ID

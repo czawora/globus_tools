@@ -80,7 +80,7 @@ if dest_56 is False and dest_72 is False and dest_CZ is False:
 
 elif dest_56 is True and dest_72 is False and dest_CZ is False:
 
-	dest = "FRNU56"
+	dest = "FRNU56_V2"
 
 elif dest_56 is False and dest_72 is True and dest_CZ is False:
 

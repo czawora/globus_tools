@@ -1,4 +1,4 @@
-#2019_09_04_11_15_28
+#2019_09_03_16_03_28
 #subj_path: /Volumes/56A/UTAH_A/NIH030
 #nsp_suffix: utah
 #raw_dir: data_raw
