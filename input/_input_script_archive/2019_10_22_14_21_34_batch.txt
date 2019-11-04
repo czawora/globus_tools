@@ -1,0 +1,7 @@
+#2019_10_22_14_21_34
+#subj_path: /Volumes/56C/UTAH_C/NIH062
+#nsp_suffix: a
+#raw_dir: data_raw
+#transfer sess count: 0
+
+

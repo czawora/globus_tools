@@ -1,0 +1,7 @@
+#2019_10_24_14_26_37
+#subj_path: /Volumes/56D/UTAH_D/NIH066
+#nsp_suffix: INST1
+#raw_dir: data_raw
+#transfer sess count: 0
+
+
